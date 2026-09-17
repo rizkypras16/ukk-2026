@@ -62,7 +62,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
     Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori.index');
     route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
     route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('admin.kategori.update');
-    route::delete('/kategori/{id}', [KategoriController::class, 'delete'])->name('admin.kategori.delete'); 
+    route::delete('/kategori/{id_kategori}', [KategoriController::class, 'delete'])->name('admin.kategori.delete'); 
    
 });
 
