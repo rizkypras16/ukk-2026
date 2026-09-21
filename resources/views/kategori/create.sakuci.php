@@ -7,7 +7,7 @@
     <form action="{{ route('admin.kategori.store') }}" method="POST">
     @csrf
     <div class="form-group">
-    <div class="form-group"><label>Nama</label><input type="text" name="nama" class="form-control" required></div>
+    <div class="form-group"><label>Nama Kategori</label><input type="text" name="nama_kategori" class="form-control" required></div>
         <div class="form-group"><label>Kelas</label><input type="text" name="kelas" class="form-control" required></div>
         <div class="form-group"><label>Keluhan</label><textarea name="keluhan" class="form-control" required></textarea></div> 
         <label for="keterangan">Kategori</label>
