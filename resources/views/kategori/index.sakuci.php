@@ -1,31 +1,33 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Kategori</h1>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Keterangan</th>
-                <th></th>Aksi</th>
-</tr>
-</thead>
-<tbody>
-    @foreach ($data as $kategori)
+
+<h1>kategori</h1>
+<a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah Kategori</a>
+<table class="table table-bordered mt-3">
     <tr>
-        <td>{{ $kategori->id_kategori }}</td>
-        <td>{{ $kategori->keterangan }}</td>
+        <th>No</th>
+        <th>Nama Kategori</th>
+        <th>Aksi</th>
+    </tr>
+    @php $no = 1; @endphp
+    @foreach ($data as $d)
+    <tr>
+        <td>{{ $no++ }}</td>
+        <td>{{ $d->nama_kategori }}</td>
         <td>
-            <a href="" class="btn-success btn-sm">edit</a>
-            <a href="" class="btn-success btn-sm">hapus</a>
-</td>
-</tr>
-@endforeach
-</tbody>
+           <a href="{{ route('kategori.edit', ['kategori' => $d->id_kategori]) }}" class="btn btn-warning">Edit</a>
+
+           <form action="{{ route('kategori.destroy', ['kategori' => $d->id_kategori]) }}" method="POST" style="display:inline">
+                @csrf
+                @method('DELETE')
+             <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus kategori ini?')">Hapus</button>
+            </form>
+        </td>
+    </tr>
+    @endforeach
 </table>
+
 {!! $data->Links() !!}
-</div>
-@endsection
 
-
+@endsection 

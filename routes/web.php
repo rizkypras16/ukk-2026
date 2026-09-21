@@ -56,15 +56,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
     Route::get('/database/export', [DatabaseController::class, 'export'])->name('admin.database.export');
 
-    //Kategori routes
-    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
     Route::post('/kategori', [KategoriController::class, 'store'])->name('admin.kategori.store');
-    Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori.index');
-    route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
-    route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('admin.kategori.update');
-    route::delete('/kategori/{id}', [KategoriController::class, 'delete'])->name('admin.kategori.delete'); 
-   
-});
+    Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
+    Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('kategori.update');
+    Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
+    });
 
 /*
 |--------------------------------------------------------------------------
@@ -76,11 +74,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 */
 // @generated-roles:start
 
-// @role:siswa:start
-Route::group(['prefix' => 'siswa', 'middleware' => 'siswa'], function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('siswa.dashboard');
-});
-// @role:siswa:end
 // @generated-roles:end
 
 /*
@@ -100,4 +93,3 @@ Route::group(['prefix' => 'siswa', 'middleware' => 'siswa'], function () {
 |     Route::get('/dashboard', [DashboardController::class, 'index']);
 | });
 */
-
