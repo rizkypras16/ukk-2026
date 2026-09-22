@@ -60,7 +60,7 @@ Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kateg
 Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
 Route::post('/kategori', [KategoriController::class, 'store'])->name('admin.kategori.store');
 Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
-Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('admin.kategori.update');
+Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('kategori.update');
 Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('admin.kategori.destroy');
 
 Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');

@@ -38,7 +38,7 @@ class KategoriController extends Controller
         // 4. Simpan ke database dengan kolom yang sesuai
         Kategori::create([
             'kode_kategori' => $kodeOtomatis,
-            'nama_kategori' => $request->input('nama_kategori'),
+            'nama_lengkap' => $request->input('nama_lengkap'),
         ]);
 
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
@@ -54,12 +54,12 @@ class KategoriController extends Controller
     {
         // Validasi disesuaikan menggunakan nama_kategori
         $request->validate([
-            'nama_kategori' => 'required|string|max:225',
+            'nama_lengkap' => 'required|string|max:225',
         ]);
 
         $kategori = Kategori::findOrFail($id_kategori);
         $kategori->update([
-            'nama_kategori' => $request->input('nama_kategori'),
+            'nama_lengkap' => $request->input('nama_lengkap'),
         ]);
 
         return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diperbarui.');
