@@ -9,6 +9,7 @@ use App\Models\Kategori;
 class KategoriController extends Controller
 {
     public function index(Request $request)
+
     {
         $data = Kategori::orderBy('id_kategori', 'desc')->paginate(5);
         return $this->view('kategori.index', compact('data'));
@@ -19,12 +20,25 @@ class KategoriController extends Controller
         return $this->view('kategori.create');
     }
 
-    public function store(Request $request)
-    {
         // Validasi disesuaikan menggunakan nama_kategori
-        $request->validate([
-            'nama_kategori' => 'required|string|max:255',
-        ]);
+       public function store(Request $request)
+{
+    $request->validate([
+        'nama_lengkap' => 'required',
+        'kategori'     => 'required',
+        'kelas'        => 'required',
+        'keluhan'      => 'required',
+    ]);
+
+    Kategori::create([
+        'nama_lengkap' => $request->nama_lengkap,
+        'kategori'     => $request->kategori,
+        'kelas'        => $request->kelas,
+        'keluhan'      => $request->keluhan,
+    ]);
+
+    return redirect()->route('admin.kategori.index')->with('success', 'kategori berhasil di tambahkan.');
+}
 
         // 1. Ambil data kategori terakhir untuk menentukan nomor urut berikutnya
         $terakhir = Kategori::orderBy('id_kategori', 'desc')->first();

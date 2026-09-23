@@ -18,11 +18,12 @@
     @foreach ($data as $d)
     <tr>
         <td>{{ $no++ }}</td>
-        <td>{{ $d->id_kategori }}</td>
-        <td>{{ $d->nama_lengkap}}</td>
-        <td>{{ $d->kategori }}</td>
-        <td>{{ $d->kelas }}</td>
-        <td>{{ $d->keluhan }}</td>
+<td>{{ $d->id_kategori }}</td>
+<td>{{ $d->nama_lengkap }}</td>
+<td>{{ $d->kategori }}</td>
+<td>{{ $d->kelas }}</td>
+<td>{{ $d->keluhan }}</td>
+
         <td>
            <a href="{{ route('admin.kategori.edit', ['kategori' => $d->id_kategori]) }}" class="btn btn-warning">Edit</a>
 
