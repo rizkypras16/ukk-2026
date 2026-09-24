@@ -1,17 +1,20 @@
-<?<?php
+<?php
 
-namespace App models;
+namespace App\Models;
+
 use Sakuci\Database\Model;
-class Siswa exstends Model 
+
+class Siswa extends Model 
 {
     protected static ?string $table = 'siswa';
 
-    protected string $primaryKey = 'id siswa';
+    protected string $primaryKey = 'id_siswa';
 
     protected array $fillable = [
-        'id user',
+        'id_user',
+        'id_kategori',
         'nis',
         'nama',
-        'kleas'
-    ]
+        'kelas',
+    ];
 }
