@@ -1,42 +1,54 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Data Kategori</h2>
+        <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary">Tambah Kategori</a>
+    </div>
 
-<h1>kategori</h1>
-<a href="{{ route('admin.kategori.create') }}" class="btn btn-primary">Tambah Kategori</a>
-<table class="table table-bordered mt-3">
-    <tr>
-        <th>No</th>
-        <th>id kategori</th>
-        <th>Nama lengkap</th>
-        <th>kategori</th>
-        <th>kelas</th>
-        <th>keluhan</th>
-        <th>Aksi</th>
-    </tr>
-    @php $no = 1; @endphp
-    @foreach ($data as $d)
-    <tr>
-        <td>{{ $no++ }}</td>
-<td>{{ $d->id_kategori }}</td>
-<td>{{ $d->nama_lengkap }}</td>
-<td>{{ $d->kategori }}</td>
-<td>{{ $d->kelas }}</td>
-<td>{{ $d->keluhan }}</td>
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-        <td>
-           <a href="{{ route('admin.kategori.edit', ['kategori' => $d->id_kategori]) }}" class="btn btn-warning">Edit</a>
-
-           <form action="{{ route('admin.kategori.destroy',  ['kategori' => $d->id_kategori]) }}" method="POST" style="display:inline">
-                @csrf
-                @method('DELETE')
-             <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus kategori ini?')">Hapus</button>
-            </form>
-        </td>
-    </tr>
-    @endforeach
-</table>
-
-{!! $data->Links() !!}
-
-@endsection 
+    <div class="card bg-dark text-white border-secondary">
+        <div class="card-body p-0">
+            <table class="table table-dark table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th class="ps-3">No</th>
+                        <th>Kode Kategori</th>
+                        <th>Nama Kategori</th>
+                        <th class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($data as $index => $item)
+                        <tr>
+                            <td class="ps-3">{{ $index + 1 }}</td>
+                            <td><span class="badge bg-info text-dark">{{ $item->kode_kategori ?? 'KTG00' . $item->id_kategori }}</span></td>
+                            
+                            {{-- PERBAIKAN: Mengecek seluruh kemungkinan nama kolom di database --}}
+                            <td>{{ $item->nama_kategori ?? $item->nama_lengkap ?? $item->kategori ?? $item->keluhan ?? '-' }}</td>
+                            
+                            <td class="text-center">
+                                <a href="{{ route('admin.kategori.edit', [$item->id_kategori]) }}" class="btn btn-warning btn-sm">Edit</a>
+                                
+                                <form action="{{ route('admin.kategori.destroy', [$item->id_kategori]) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-3">Belum ada data kategori.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@endsection

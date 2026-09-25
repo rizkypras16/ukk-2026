@@ -1,0 +1,42 @@
+@extends('layouts.app')
+
+@section('title', 'Edit Alat')
+
+@section('content')
+<div class="container py-4" style="max-width: 600px;">
+    <h4 class="fw-bold mb-4">Edit Data Alat</h4>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <form action="{{ route('alat.update', $alat->id_alat) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="mb-3">
+                    <label class="form-label">Nama Alat</label>
+                    <input type="text" name="nama_alat" class="form-control" value="{{ $alat->nama_alat }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Kategori</label>
+                    <input type="text" name="kategori" class="form-control" value="{{ $alat->kategori }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Jumlah</label>
+                    <input type="number" name="jumlah" class="form-control" value="{{ $alat->jumlah }}" min="1" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Kondisi</label>
+                    <select name="kondisi" class="form-select" required>
+                        <option value="Baik" {{ $alat->kondisi == 'Baik' ? 'selected' : '' }}>Baik</option>
+                        <option value="Rusak Ringan" {{ $alat->kondisi == 'Rusak Ringan' ? 'selected' : '' }}>Rusak Ringan</option>
+                        <option value="Rusak Berat" {{ $alat->kondisi == 'Rusak Berat' ? 'selected' : '' }}>Rusak Berat</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ route('alat.index') }}" class="btn btn-secondary">Batal</a>
+                    <button type="submit" class="btn btn-warning">Perbarui Alat</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection

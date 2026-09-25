@@ -21,32 +21,24 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validasi Input
+        // 1. Validasi hanya nama kategori
         $request->validate([
-            'nama_lengkap' => 'required|string|max:255',
-            'kategori'     => 'required',
-            'kelas'        => 'required',
-            'keluhan'      => 'required',
+            'nama_kategori' => 'required|string|max:255',
         ]);
 
-        // 2. Ambil data kategori terakhir untuk menentukan nomor urut berikutnya
+        // 2. Ambil data kategori terakhir untuk kode otomatis (KTG001, KTG002, dst.)
         $terakhir = Kategori::orderBy('id_kategori', 'desc')->first();
-
-        // 3. Tentukan nomor urut berikutnya
         $nomorUrut = ($terakhir && isset($terakhir->kode_kategori)) 
             ? ((int) substr($terakhir->kode_kategori, 3)) + 1 
             : 1;
 
-        // 4. Format kode otomatis (misal: KTG001)
         $kodeOtomatis = 'KTG' . sprintf("%03d", $nomorUrut);
 
-        // 5. Simpan ke database
+        // 3. Simpan data (mengisi dua nama kolom agar support kolom nama_lengkap maupun nama_kategori)
         Kategori::create([
             'kode_kategori' => $kodeOtomatis,
-            'nama_lengkap'  => $request->input('nama_lengkap'),
-            'kategori'      => $request->input('kategori'),
-            'kelas'         => $request->input('kelas'),
-            'keluhan'       => $request->input('keluhan'),
+            'nama_kategori' => $request->input('nama_kategori'),
+            'nama_lengkap'  => $request->input('nama_kategori'),
         ]);
 
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
@@ -61,12 +53,13 @@ class KategoriController extends Controller
     public function update(Request $request, $id_kategori)
     {
         $request->validate([
-            'nama_lengkap' => 'required|string|max:255',
+            'nama_kategori' => 'required|string|max:255',
         ]);
 
         $kategori = Kategori::findOrFail($id_kategori);
         $kategori->update([
-            'nama_lengkap' => $request->input('nama_lengkap'),
+            'nama_kategori' => $request->input('nama_kategori'),
+            'nama_lengkap'  => $request->input('nama_kategori'),
         ]);
 
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');

@@ -7,6 +7,8 @@ use App\Controllers\Core\DocsController;
 use App\Controllers\Core\RoleController;
 use App\Controllers\Core\UserController;
 use App\Controllers\KategoriController;
+use App\Controllers\PenggunaController; // Import PenggunaController
+use App\Controllers\AlatController;     // Import AlatController
 use Sakuci\Route;
 
 /*
@@ -56,16 +58,49 @@ Route::group(['prefix' => 'admin','middleware' => 'admin'], function () {
 
     Route::get('/database/export', [DatabaseController::class, 'export'])->name('admin.database.export');
 
-Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori.index');
-Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
-Route::post('/kategori', [KategoriController::class, 'store'])->name('admin.kategori.store');
-Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
-Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('kategori.update');
-Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('admin.kategori.destroy');
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori.index');
+    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
+    Route::post('/kategori', [KategoriController::class, 'store'])->name('admin.kategori.store');
+    Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
+    Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('kategori.update');
+    // Penambahan alias agar route admin.kategori.update terdaftar tanpa mengubah kode asli
+    Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('admin.kategori.update');
+    Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('admin.kategori.destroy');
 
-Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
-Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
-    });
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
+
+    /// Route Pengguna (Mendukung panggil route('pengguna.create') maupun route('admin.pengguna.create'))
+    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('pengguna.index');
+    Route::get('/pengguna/create', [PenggunaController::class, 'create'])->name('pengguna.create');
+    Route::post('/pengguna', [PenggunaController::class, 'store'])->name('pengguna.store');
+    Route::get('/pengguna/{pengguna}/edit', [PenggunaController::class, 'edit'])->name('pengguna.edit');
+    Route::put('/pengguna/{pengguna}', [PenggunaController::class, 'update'])->name('pengguna.update');
+    Route::delete('/pengguna/{pengguna}', [PenggunaController::class, 'destroy'])->name('pengguna.destroy');
+
+    // Alias dengan prefix admin untuk Navbar
+    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
+    Route::get('/pengguna/create', [PenggunaController::class, 'create'])->name('admin.pengguna.create');
+    // Route Alat
+    Route::get('/alat', [AlatController::class, 'index'])->name('alat.index');
+    Route::get('/alat/create', [AlatController::class, 'create'])->name('alat.create');
+    Route::post('/alat', [AlatController::class, 'store'])->name('alat.store');
+    Route::get('/alat/{alat}/edit', [AlatController::class, 'edit'])->name('alat.edit');
+    Route::put('/alat/{alat}', [AlatController::class, 'update'])->name('alat.update');
+    Route::delete('/alat/{alat}', [AlatController::class, 'destroy'])->name('alat.destroy');
+
+    Route::get('/alat', [AlatController::class, 'index'])->name('alat.index');
+    Route::get('/alat/create', [AlatController::class, 'create'])->name('alat.create');
+    Route::post('/alat', [AlatController::class, 'store'])->name('alat.store');
+    Route::get('/alat/{alat}/edit', [AlatController::class, 'edit'])->name('alat.edit');
+    Route::put('/alat/{alat}', [AlatController::class, 'update'])->name('alat.update');
+    Route::delete('/alat/{alat}', [AlatController::class, 'destroy'])->name('alat.destroy');
+
+    // Alias Route dengan Prefix Admin (agar Navbar tidak error)
+    Route::get('/alat', [AlatController::class, 'index'])->name('admin.alat.index');
+    Route::get('/alat/create', [AlatController::class, 'create'])->name('admin.alat.create');
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -78,21 +113,3 @@ Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kat
 // @generated-roles:start
 
 // @generated-roles:end
-
-/*
-|--------------------------------------------------------------------------
-| Contoh (hapus/ubah sesuai kebutuhan)
-|--------------------------------------------------------------------------
-|
-| use App\Controllers\BukuController;
-|
-| Route::get('/buku', [BukuController::class, 'index'])->name('buku.index');
-|
-| // Tujuh route CRUD sekaligus: index, create, store, show, edit, update, destroy
-| // Route::resource
-|
-| // Group dengan prefix dan middleware bersama
-| Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
-|     Route::get('/dashboard', [DashboardController::class, 'index']);
-| });
-*/
