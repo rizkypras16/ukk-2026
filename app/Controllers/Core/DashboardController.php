@@ -9,12 +9,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('core.dashboard', ['user' => User::current()]);
+        return view('welcome', ['user' => User::current()]);
     }
 
     public function admin()
     {
-        return view('core.admin.dashboard', ['user' => User::current()]);
+        return view('welcome', ['user' => User::current()]);
     }
 }
 

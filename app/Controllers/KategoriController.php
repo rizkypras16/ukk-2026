@@ -21,12 +21,10 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validasi hanya nama kategori
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
         ]);
 
-        // 2. Ambil data kategori terakhir untuk kode otomatis (KTG001, KTG002, dst.)
         $terakhir = Kategori::orderBy('id_kategori', 'desc')->first();
         $nomorUrut = ($terakhir && isset($terakhir->kode_kategori)) 
             ? ((int) substr($terakhir->kode_kategori, 3)) + 1 
@@ -34,7 +32,6 @@ class KategoriController extends Controller
 
         $kodeOtomatis = 'KTG' . sprintf("%03d", $nomorUrut);
 
-        // 3. Simpan data (mengisi dua nama kolom agar support kolom nama_lengkap maupun nama_kategori)
         Kategori::create([
             'kode_kategori' => $kodeOtomatis,
             'nama_kategori' => $request->input('nama_kategori'),

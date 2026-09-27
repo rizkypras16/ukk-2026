@@ -14,6 +14,7 @@ class PenggunaController extends Controller
         $data = Siswa::leftJoin('users', 'siswa.id_user', '=', 'users.id')
             ->orderBy('siswa.id_siswa', 'desc')
             ->paginate(5);
+
         return view('pengguna.index', compact('data'));
     }
 
@@ -30,8 +31,11 @@ class PenggunaController extends Controller
             'kelas' => 'required|string|max:10',
         ]);
 
+        // Buat username dari NIS atau hilangkan spasi pada nama
+        $username = strtolower(str_replace(' ', '', $request->nama));
+
         $user = User::create([
-            'username' => $request->nama,
+            'username' => $username,
             'password' => password_hash('123456', PASSWORD_DEFAULT),
             'role'     => 'siswa',
         ]);
@@ -49,6 +53,7 @@ class PenggunaController extends Controller
     public function edit($pengguna)
     {
         $siswa = Siswa::where('id_siswa', $pengguna)->first();
+
         return view('pengguna.edit', compact('siswa'));
     }
 
@@ -60,21 +65,37 @@ class PenggunaController extends Controller
             'kelas' => 'required|string|max:10',
         ]);
 
-        $user = Siswa::where('id_siswa', $pengguna)->first();
-        $user->update([
-            'nama'  => $request->nama,
-            'nis'   => $request->nis,
-            'kelas' => $request->kelas,
-        ]);
+        $siswa = Siswa::where('id_siswa', $pengguna)->first();
 
-        return redirect()->route('pengguna.index');
+        if ($siswa) {
+            $siswa->update([
+                'nama'  => $request->nama,
+                'nis'   => $request->nis,
+                'kelas' => $request->kelas,
+            ]);
+        }
+
+        return redirect()->route('pengguna.index')->with('success', 'Data berhasil diperbarui');
     }
 
-   public function destroy(Request $request, $id)
+    public function destroy(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        // Cari data siswa terlebih dahulu berdasarkan id_siswa
+        $siswa = Siswa::where('id_siswa', $id)->first();
 
-        return redirect()->route('pengguna.index')->with('success', 'pengguna berhasil dihapus.');
+        if ($siswa) {
+            // Hapus akun user yang terhubung (jika ada)
+            if ($siswa->id_user) {
+                $user = User::find($siswa->id_user);
+                if ($user) {
+                    $user->delete();
+                }
+            }
+
+            // Hapus data siswa
+            $siswa->delete();
+        }
+
+        return redirect()->route('pengguna.index')->with('success', 'Pengguna berhasil dihapus.');
     }
 }

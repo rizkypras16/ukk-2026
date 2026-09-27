@@ -4,6 +4,7 @@ namespace App\Controllers\Core;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Siswa;
 use Sakuci\Controller;
 use Sakuci\Http\Request;
 use Sakuci\Session;
@@ -17,38 +18,68 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        $roles = Role::where('can_register', 1)->orderBy('name')->get();
-
-        if ($roles === []) {
-            return redirect('/login')->with('error', 'Pendaftaran belum dibuka.');
+        try {
+            return view('core.auth.register');
+        } catch (\Throwable $e) {
+            return redirect('/login')->with('error', 'Pendaftaran belum siap/dibuka.');
         }
-
-        return view('core.auth.register', ['roles' => $roles]);
     }
 
     public function register(Request $request)
     {
-        $allowed = Role::where('can_register', 1)->pluck('name');
+        try {
+            // 1. Ambil input NIS / Username & potong jika lebih dari 50 karakter
+            $rawInput = trim($request->input('username') ?? $request->input('nis') ?? '');
+            $usernameInput = substr($rawInput, 0, 50);
 
-        if ($allowed === []) {
-            return redirect('/login')->with('error', 'Pendaftaran belum dibuka.');
+            if (empty($usernameInput)) {
+                return back()->with('error', 'NIS / Username wajib diisi.')->withInput();
+            }
+
+            // 2. Validasi Input
+            $rules = [
+                'password' => 'required|min:6|confirmed',
+                'nama'     => 'required|string|max:255',
+                'kelas'    => 'required|string|max:50',
+            ];
+
+            $data = $request->validate($rules);
+
+            // Cek keunikan NIS/Username di database
+            $existingUser = User::firstWhere('username', $usernameInput);
+            if ($existingUser) {
+                return back()->with('error', 'NIS / Username sudah terdaftar. Gunakan NIS lain.')->withInput();
+            }
+
+            // 3. PAKSA ROLE MENJADI 'siswa' (Bukan admin)
+            $userRole = 'siswa';
+
+            // 4. Simpan ke tabel users
+            $user = User::create([
+                'username' => $usernameInput,
+                'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+                'role'     => $userRole,
+            ]);
+
+            // 5. Simpan ke tabel siswa
+            if (class_exists(Siswa::class)) {
+                Siswa::create([
+                    'id_user'     => $user->id,
+                    'id_kategori' => null,
+                    'nis'         => $usernameInput,
+                    'nama'        => $request->input('nama'),
+                    'kelas'       => $request->input('kelas'),
+                ]);
+            }
+
+            // Set session login
+            Session::put('user_id', $user->id);
+
+            return redirect('/dashboard')->with('success', 'Pendaftaran berhasil. Selamat datang, ' . $user->username . '.');
+
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Gagal mendaftar: ' . $e->getMessage())->withInput();
         }
-
-        $data = $request->validate([
-            'username' => 'required|min:3|max:50|alpha_dash|unique:users,username',
-            'password' => 'required|min:6|confirmed',
-            'role'     => 'required|in:' . implode(',', $allowed),
-        ]);
-
-        $user = User::create([
-            'username' => $data['username'],
-            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-            'role'     => $data['role'],
-        ]);
-
-        Session::put('user_id', $user->id);
-
-        return redirect('/dashboard')->with('success', 'Pendaftaran berhasil. Selamat datang, ' . $user->username . '.');
     }
 
     public function login(Request $request)
@@ -68,8 +99,12 @@ class AuthController extends Controller
 
         Session::put('user_id', $user->id);
 
-        return redirect($user->role === 'admin' ? '/admin' : '/dashboard')
-            ->with('success', 'Selamat datang, ' . $user->username . '.');
+        // Pengarahan otomatis berdasarkan role
+        if (strtolower($user->role) === 'admin') {
+            return redirect('/admin')->with('success', 'Selamat datang kembali Admin, ' . $user->username . '.');
+        }
+
+        return redirect('/dashboard')->with('success', 'Selamat datang, ' . $user->username . '.');
     }
 
     public function logout()
@@ -79,4 +114,3 @@ class AuthController extends Controller
         return redirect('/login')->with('success', 'Berhasil logout.');
     }
 }
-
