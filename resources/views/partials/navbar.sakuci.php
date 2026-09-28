@@ -77,15 +77,18 @@
                 <li class="nav-item">
                     <a class="nav-link text-white sidebar-item" href="{{ route('pengguna.index') }}">Pengguna</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white sidebar-item" href="{{ route('admin.pengaduan.index') }}">Pengaduan</a>
+                </li>
             @endif
 
             {{-- MENU UNTUK SISWA --}}
             @if ($userRole === 'siswa')
                 <li class="nav-item">
-                    <a class="nav-link text-white sidebar-item" href="{{ route('pengaduan.index') }}">Pengaduan</a>
+                    <a class="nav-link text-white sidebar-item" href="{{ route('pengaduan.create') }}">Buat Pengaduan</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white sidebar-item" href="{{ route('pengaduan.create') }}">Buat Pengaduan</a>
+                    <a class="nav-link text-white sidebar-item" href="{{ route('pengaduan.index') }}">Riwayat Pengaduan</a>
                 </li>
             @endif
         </ul>

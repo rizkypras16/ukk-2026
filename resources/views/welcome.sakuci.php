@@ -1,214 +1,227 @@
 @extends('layouts.app')
 
-@section('title', config('app.name') . ' -- Kerangka PHP Ringan')
+@section('title', config('app.name') . ' -- Aplikasi Pengaduan Sarpras UKK RPL')
 
 @section('content')
 
-    {{-- Style Tambahan untuk Tema Modern & Premium --}}
     <style>
         :root {
-            --dark-bg: #121212;
-            --card-dark: #1a1d20;
-            --accent-blue: #0d6efd;
-            --accent-cyan: #0dcaf0;
-            --border-glow: rgba(13, 202, 240, 0.2);
+            --dark-bg: #080c14;
+            --card-dark: #0f172a;
+            --accent-blue: #3b82f6;
+            --accent-cyan: #06b6d4;
         }
 
-        /* Hero Container */
         .hero-section {
-            background: radial-gradient(circle at top, rgba(13, 110, 253, 0.15) 0%, rgba(18, 18, 18, 0) 70%);
+            position: relative;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(8, 12, 20, 0.98) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 3.5rem 1.5rem;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .badge-brand-custom {
-            background: rgba(13, 110, 253, 0.15);
-            color: #6ea8fe;
-            border: 1px solid rgba(13, 110, 253, 0.3);
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            border-radius: 24px;
+            padding: 4rem 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
         }
 
         .text-brand-custom {
-            background: linear-gradient(135deg, #0dcaf0 0%, #0d6efd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #38bdf8;
             font-weight: 800;
         }
 
-        /* Tombol Modern */
         .btn-brand-custom {
-            background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+            background: #2563eb;
             color: #ffffff;
             border: none;
             font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            padding: 0.75rem 1.75rem;
         }
 
         .btn-brand-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.6);
+            background: #1d4ed8;
             color: #fff;
-        }
-
-        .btn-outline-custom {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #e0e0e0;
-            background: rgba(255, 255, 255, 0.03);
-            font-weight: 500;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-custom:hover {
-            border-color: #0dcaf0;
-            color: #0dcaf0;
-            background: rgba(13, 202, 240, 0.05);
             transform: translateY(-2px);
         }
 
-        code.inline-custom {
-            background-color: rgba(255, 255, 255, 0.08);
-            color: #0dcaf0;
-            padding: 3px 8px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .btn-login-custom {
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: #38bdf8;
+            background: transparent;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            padding: 0.75rem 1.75rem;
         }
 
-        /* Card Panduan / Step Card */
-        .step-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 16px;
-            padding: 2rem 1.5rem;
-            height: 100%;
+        .btn-login-custom:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: #ffffff;
+            border-color: #38bdf8;
+            transform: translateY(-2px);
+        }
+
+        /* --- ANIMASI ILUSTRASI FOTO KARAKTER --- */
+        .teacher-container {
             position: relative;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-
-        .step-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #0d6efd, #0dcaf0);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .step-card:hover {
-            transform: translateY(-6px);
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(13, 202, 240, 0.3);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .step-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Lingkaran Nomor / Badge Step */
-        .step-badge {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, rgba(13, 110, 253, 0.2) 0%, rgba(13, 202, 240, 0.2) 100%);
-            border: 1px solid rgba(13, 202, 240, 0.3);
-            color: #0dcaf0;
-            font-size: 1.2rem;
-            font-weight: 700;
+            height: 260px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.25rem auto;
+        }
+
+        .teacher-avatar-wrapper {
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 2px solid rgba(56, 189, 248, 0.5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.2);
+            animation: floatTeacher 3s ease-in-out infinite;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .teacher-avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes floatTeacher {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .speech-bubble {
+            position: absolute;
+            top: 0px;
+            right: 5px;
+            background: rgba(30, 41, 59, 0.95);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.75rem 1rem;
+            border-radius: 14px;
+            font-size: 0.82rem;
+            color: #e2e8f0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            max-width: 200px;
+            animation: pulseBubble 3s ease-in-out infinite;
+            z-index: 3;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 30px;
+            border-width: 8px 8px 0;
+            border-style: solid;
+            border-color: rgba(30, 41, 59, 0.95) transparent;
+            display: block;
+            width: 0;
+        }
+
+        @keyframes pulseBubble {
+            0%, 100% { transform: scale(1); opacity: 0.95; }
+            50% { transform: scale(1.02); opacity: 1; }
+        }
+
+        .teacher-badge {
+            position: absolute;
+            bottom: 10px;
+            background: rgba(6, 182, 212, 0.15);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            color: #38bdf8;
+            font-size: 0.73rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            z-index: 3;
+        }
+
+        .procedure-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px;
+            padding: 1.75rem;
         }
     </style>
 
-    {{-- Hero --}}
-    <section class="text-center py-4 py-lg-5 hero-section my-3">
-        <span class="badge rounded-pill badge-brand-custom px-3 py-2 mb-3">Sakuci v1.0.0</span>
+    <div class="container">
+        {{-- Hero Section Utama --}}
+        <section class="hero-section">
+            <div class="row align-items-center g-5">
+                
+                {{-- KOLOM KIRI: Judul & Tombol Aksi --}}
+                <div class="col-lg-6 text-center text-lg-start">
+                    <span class="text-secondary small fw-semibold text-uppercase tracking-widest d-block mb-2">
+                        UKK RPL -- Uji Kompetensi Keahlian
+                    </span>
 
-        <h1 class="display-5 fw-bold mb-3">
-            PENGADUAN SARANA & PRASARANA<br class="d-none d-md-inline">
-            <span class="text-brand-custom">SMK SANGKURIANG 1 CIMAHI</span>
-        </h1>
+                    <h1 class="display-5 fw-bold mb-3 text-white">
+                        Pengaduan Sarana & Prasarana <span class="text-brand-custom">Sakuci</span>
+                    </h1>
 
-        <p class="lead text-secondary mx-auto mb-4" style="max-width: 620px;">
-            Laporkan kerusakan atau kendala fasilitas sekolah dengan cepat, praktis,
-            dan tertransparansi
-        </p>
-
-        <div class="d-flex flex-wrap gap-2 justify-content-center">
-            <a class="btn btn-brand-custom btn-lg px-4" href="{{ route('kategori.index') }}">mulai laporkan</a>
-            <a class="btn btn-outline-custom btn-lg px-4" href="https://github.com/indrabsus/sakuci-framework" target="_blank">GitHub</a>
-        </div>
-
-        <p class="text-secondary small mt-4 mb-0">
-            Panduan langkah demi langkah cara melapor
-            <code class="inline-custom">TUTORIAL.md</code>
-        </p>
-    </section>
-
-    {{-- Section Alur Pengaduan --}}
-    <section class="py-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold text-white mb-2">Prosedur Pengaduan</h2>
-            <p class="text-secondary">4 langkah mudah menyampaikan laporan fasilitas sekolah</p>
-        </div>
-
-        <div class="row g-4 justify-content-center">
-            <!-- Langkah 1 -->
-            <div class="col-md-6 col-lg-3">
-                <div class="step-card text-center">
-                    <div class="step-badge">01</div>
-                    <h5 class="fw-bold text-white mb-2">Akses Layanan</h5>
-                    <p class="text-secondary small mb-0">
-                        Klik tombol <span class="text-white fw-semibold">"mulai laporkan"</span> pada halaman utama untuk menuju formulir.
+                    <p class="text-secondary mb-4" style="font-size: 0.95rem; line-height: 1.6;">
+                        Platform digital resmi untuk pelaporan, pengelolaan, dan pemantauan perbaikan fasilitas atau alat sekolah secara cepat, transparan, dan terstruktur.
                     </p>
-                </div>
-            </div>
 
-            <!-- Langkah 2 -->
-            <div class="col-md-6 col-lg-3">
-                <div class="step-card text-center">
-                    <div class="step-badge">02</div>
-                    <h5 class="fw-bold text-white mb-2">Isi Data Rinci</h5>
-                    <p class="text-secondary small mb-0">
-                        Lengkapi identitas diri, lokasi sarana, dan detail kerusakan fasilitas yang dilaporkan.
-                    </p>
-                </div>
-            </div>
+                    <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                        <a class="btn btn-brand-custom shadow-sm" href="{{ route('pengaduan.create') }}">
+                            <i class="bi bi-megaphone-fill me-1"></i> Buat Pengaduan
+                        </a>
+                        <a class="btn btn-login-custom shadow-sm" href="/login">
+    <i class="bi bi-box-arrow-in-right me-1"></i> Masuk Sistem
 
-            <!-- Langkah 3 -->
-            <div class="col-md-6 col-lg-3">
-                <div class="step-card text-center">
-                    <div class="step-badge">03</div>
-                    <h5 class="fw-bold text-white mb-2">Kirim Laporan</h5>
-                    <p class="text-secondary small mb-0">
-                        Periksa kembali kelengkapan data lalu tekan kirim agar tersimpan di sistem.
-                    </p>
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Langkah 4 -->
-            <div class="col-md-6 col-lg-3">
-                <div class="step-card text-center">
-                    <div class="step-badge">04</div>
-                    <h5 class="fw-bold text-white mb-2">Tindak Lanjut</h5>
-                    <p class="text-secondary small mb-0">
-                        Tim sarana prasarana sekolah akan memverifikasi dan memperbaiki kerusakan.
-                    </p>
+                {{-- KOLOM KANAN: Karakter Ilustrasi & Panduan Singkat --}}
+                <div class="col-lg-6">
+                    <div class="procedure-box">
+                        <div class="row align-items-center">
+                            
+                            {{-- Foto Ilustrasi Karakter --}}
+                            <div class="col-md-5">
+                                <div class="teacher-container">
+                                    <div class="speech-bubble">
+                                        <i class="bi bi-chat-left-text-fill text-info me-1"></i> Halo! Ada alat atau fasilitas rusak? Lapor yuk!
+                                    </div>
+                                    <div class="teacher-avatar-wrapper">
+                                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=RizkyPras&backgroundColor=b6e3f4,c0aede,d1d4f9" alt="Admin Sarpras">
+                                    </div>
+                                    <div class="teacher-badge">
+                                        <i class="bi bi-circle-fill text-success" style="font-size: 6px;"></i> Layanan Aktif
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Teks Panduan --}}
+                            <div class="col-md-7">
+                                <h6 class="fw-bold text-white mb-3">
+                                    <i class="bi bi-shield-check text-info me-1"></i> Alur Layanan
+                                </h6>
+                                <ul class="list-unstyled text-secondary small mb-0" style="line-height: 1.8;">
+                                    <li class="mb-2"><strong class="text-white">1.</strong> Login akun siswa.</li>
+                                    <li class="mb-2"><strong class="text-white">2.</strong> Pilih alat & isi keluhan.</li>
+                                    <li class="mb-2"><strong class="text-white">3.</strong> Kirim laporan kerusakan.</li>
+                                    <li><strong class="text-white">4.</strong> Pantau proses perbaikan.</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
+
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
 @endsection

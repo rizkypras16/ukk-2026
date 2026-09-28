@@ -14,7 +14,7 @@ use Sakuci\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Route Web
+| Route Web Umum
 |--------------------------------------------------------------------------
 */
 
@@ -26,7 +26,7 @@ Route::get('/docs', [DocsController::class, 'index'])->name('docs');
 
 /*
 |--------------------------------------------------------------------------
-| Login multi-role
+| Login & Auth
 |--------------------------------------------------------------------------
 */
 
@@ -41,82 +41,19 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 
 /*
 |--------------------------------------------------------------------------
-| Route Pengaduan (Siswa / User)
+| Route Pengaduan (Untuk Siswa / User Biasa)
 |--------------------------------------------------------------------------
 */
 Route::get('/pengaduan/tambah', [PengaduanController::class, 'create'])->name('pengaduan.create')->middleware('auth');
 Route::post('/pengaduan/simpan', [PengaduanController::class, 'store'])->name('pengaduan.store')->middleware('auth');
-Route::get('/pengaduan/riwayat', [PengaduanController::class, 'index'])->name('pengaduan.riwayat')->middleware('auth');
-
-/*
-|--------------------------------------------------------------------------
-| Route Admin & CRUD (Dual Aliasing untuk mencegah error route tidak terdaftar)
-|--------------------------------------------------------------------------
-*/
-
-// --- KATEGORI ---
-Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
-Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori.index');
-
-Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
-Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
-
-Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.store');
-Route::post('/kategori', [KategoriController::class, 'store'])->name('admin.kategori.store');
-
-Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
-Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
-
-Route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('kategori.update');
-Route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('admin.kategori.update');
-
-Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
-Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])->name('admin.kategori.destroy');
-
-
-// --- ALAT ---
-Route::get('/alat', [AlatController::class, 'index'])->name('alat.index');
-Route::get('/alat', [AlatController::class, 'index'])->name('admin.alat.index');
-
-Route::get('/alat/create', [AlatController::class, 'create'])->name('alat.create');
-Route::get('/alat/create', [AlatController::class, 'create'])->name('admin.alat.create');
-
-Route::post('/alat', [AlatController::class, 'store'])->name('alat.store');
-Route::post('/alat', [AlatController::class, 'store'])->name('admin.alat.store');
-
-Route::get('/alat/{id}/edit', [AlatController::class, 'edit'])->name('alat.edit');
-Route::get('/alat/{id}/edit', [AlatController::class, 'edit'])->name('admin.alat.edit');
-
-Route::put('/alat/{id}', [AlatController::class, 'update'])->name('alat.update');
-Route::put('/alat/{id}', [AlatController::class, 'update'])->name('admin.alat.update');
-
-Route::delete('/alat/{id}', [AlatController::class, 'destroy'])->name('alat.destroy');
-Route::delete('/alat/{id}', [AlatController::class, 'destroy'])->name('admin.alat.destroy');
-
-
-// --- PENGGUNA ---
-Route::get('/pengguna', [PenggunaController::class, 'index'])->name('pengguna.index');
-Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
-
-Route::get('/pengguna/create', [PenggunaController::class, 'create'])->name('pengguna.create');
-Route::get('/pengguna/create', [PenggunaController::class, 'create'])->name('admin.pengguna.create');
-
-Route::post('/pengguna', [PenggunaController::class, 'store'])->name('pengguna.store');
-Route::post('/pengguna', [PenggunaController::class, 'store'])->name('admin.pengguna.store');
-
-Route::get('/pengguna/{id}/edit', [PenggunaController::class, 'edit'])->name('pengguna.edit');
-Route::get('/pengguna/{id}/edit', [PenggunaController::class, 'edit'])->name('admin.pengguna.edit');
-
-Route::put('/pengguna/{id}', [PenggunaController::class, 'update'])->name('pengguna.update');
-Route::put('/pengguna/{id}', [PenggunaController::class, 'update'])->name('admin.pengguna.update');
-
-Route::delete('/pengguna/{id}', [PenggunaController::class, 'destroy'])->name('pengguna.destroy');
-Route::delete('/pengguna/{id}', [PenggunaController::class, 'destroy'])->name('admin.pengguna.destroy');
+Route::get('/pengaduan/riwayat', [PengaduanController::class, 'index'])->name('pengaduan.index')->middleware('auth');
+Route::get('/pengaduan', [PengaduanController::class, 'index'])->name('pengaduan.riwayat')->middleware('auth');
+Route::delete('/pengaduan/{id}', [PengaduanController::class, 'destroy'])->name('pengaduan.destroy')->middleware('auth');
 
 
 /*
 |--------------------------------------------------------------------------
-| Route Admin Umum Lainnya
+| Route Admin (Kelola Sarana, Kategori, & Pengaduan)
 |--------------------------------------------------------------------------
 */
 Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
@@ -132,9 +69,74 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
     Route::get('/database/export', [DatabaseController::class, 'export'])->name('admin.database.export');
 
-    // Route Pengaduan Admin
+    // Route Kategori (Dual Aliasing untuk mencegah error view)
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('admin.kategori.index');
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+    
+    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('admin.kategori.create');
+    Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kategori.create');
+    
+    Route::post('/kategori', [KategoriController::class, 'store'])->name('admin.kategori.store');
+    Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.store');
+    
+    Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('admin.kategori.edit');
+    Route::get('/kategori/{kategori}/edit', [KategoriController::class, 'edit'])->name('kategori.edit');
+    
+    Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('admin.kategori.update');
+    Route::put('/kategori/{kategori}', [KategoriController::class, 'update'])->name('kategori.update');
+    
+    Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('admin.kategori.destroy');
+    Route::delete('/kategori/{kategori}', [KategoriController::class, 'destroy'])->name('kategori.destroy');
+
+    // Route Pengguna (Dual Aliasing)
+    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
+    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('pengguna.index');
+    
+    Route::get('/pengguna/create', [PenggunaController::class, 'create'])->name('admin.pengguna.create');
+    Route::get('/pengguna/create', [PenggunaController::class, 'create'])->name('pengguna.create');
+    
+    Route::post('/pengguna', [PenggunaController::class, 'store'])->name('admin.pengguna.store');
+    Route::post('/pengguna', [PenggunaController::class, 'store'])->name('pengguna.store');
+    
+    Route::get('/pengguna/{pengguna}/edit', [PenggunaController::class, 'edit'])->name('admin.pengguna.edit');
+    Route::get('/pengguna/{pengguna}/edit', [PenggunaController::class, 'edit'])->name('pengguna.edit');
+    
+    Route::put('/pengguna/{pengguna}', [PenggunaController::class, 'update'])->name('admin.pengguna.update');
+    Route::put('/pengguna/{pengguna}', [PenggunaController::class, 'update'])->name('pengguna.update');
+    
+    Route::delete('/pengguna/{pengguna}', [PenggunaController::class, 'destroy'])->name('admin.pengguna.destroy');
+    Route::delete('/pengguna/{pengguna}', [PenggunaController::class, 'destroy'])->name('pengguna.destroy');
+
+    // Route Alat (Dual Aliasing)
+    Route::get('/alat', [AlatController::class, 'index'])->name('admin.alat.index');
+    Route::get('/alat', [AlatController::class, 'index'])->name('alat.index');
+    
+    Route::get('/alat/create', [AlatController::class, 'create'])->name('admin.alat.create');
+    Route::get('/alat/create', [AlatController::class, 'create'])->name('alat.create');
+    
+    Route::post('/alat', [AlatController::class, 'store'])->name('admin.alat.store');
+    Route::post('/alat', [AlatController::class, 'store'])->name('alat.store');
+    
+    Route::get('/alat/{alat}/edit', [AlatController::class, 'edit'])->name('admin.alat.edit');
+    Route::get('/alat/{alat}/edit', [AlatController::class, 'edit'])->name('alat.edit');
+    
+    Route::put('/alat/{alat}', [AlatController::class, 'update'])->name('admin.alat.update');
+    Route::put('/alat/{alat}', [AlatController::class, 'update'])->name('alat.update');
+    
+    Route::delete('/alat/{alat}', [AlatController::class, 'destroy'])->name('admin.alat.destroy');
+    Route::delete('/alat/{alat}', [AlatController::class, 'destroy'])->name('alat.destroy');
+
+    // Route Kelola Pengaduan (Khusus Admin)
     Route::get('/pengaduan', [PengaduanController::class, 'adminIndex'])->name('admin.pengaduan.index');
-    Route::get('/pengaduan/{id}', [PengaduanController::class, 'adminShow'])->name('admin.pengaduan.show');
-    Route::put('/pengaduan/{id}', [PengaduanController::class, 'adminUpdate'])->name('admin.pengaduan.update');
-    Route::delete('/pengaduan/{id}', [PengaduanController::class, 'adminDestroy'])->name('admin.pengaduan.destroy');
+    Route::get('/pengaduan/{id}/edit', [PengaduanController::class, 'edit'])->name('admin.pengaduan.edit');
+    Route::put('/pengaduan/{id}', [PengaduanController::class, 'update'])->name('admin.pengaduan.update');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Route role dinamis
+|--------------------------------------------------------------------------
+*/
+// @generated-roles:start
+
+// @generated-roles:end

@@ -41,6 +41,8 @@
                             <input type="file" name="foto" id="foto" class="form-control bg-dark text-white border-secondary" accept="image/png, image/jpeg, image/jpg">
                         </div>
 
+                        
+
                         <button type="submit" class="btn btn-primary w-100">Kirim Pengaduan</button>
                     </form>
                 </div>
