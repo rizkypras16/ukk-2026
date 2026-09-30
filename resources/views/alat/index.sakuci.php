@@ -1,53 +1,62 @@
-@extends('layouts.app')
+<?php \Sakuci\View::startSection('content'); ?>
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Manajemen Alat</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a href="<?= route('dashboard') ?>">Dashboard</a></li>
+        <li class="breadcrumb-item active">Data Alat</li>
+    </ol>
 
-@section('content')
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Data Kategori</h3>
-        <a href="{{ route('admin.kategori.create') }}" class="btn btn-primary">Tambah Kategori</a>
-    </div>
+    <?php if (session('success')): ?>
+        <div class="alert alert-success"><?= session('success') ?></div>
+    <?php endif; ?>
 
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Daftar Alat
+            <a href="<?= route('alat.create') ?>" class="btn btn-primary btn-sm float-end">Tambah Alat</a>
         </div>
-    @endif
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>ID Kategori</th>
-                <th>Nama Lengkap</th>
-                <th>Kategori</th>
-                <th>Kelas</th>
-                <th>Keluhan</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php $no = 1; @endphp
-            @foreach ($data as $d)
-            <tr>
-                <td>{{ $no++ }}</td>
-                <td>{{ $d->id_kategori }}</td>
-                <td>{{ $d->nama_lengkap }}</td>
-                <td>{{ $d->kategori }}</td>
-                <td>{{ $d->kelas }}</td>
-                <td>{{ $d->keluhan }}</td>
-                <td>
-                    <a href="{{ route('admin.kategori.edit', ['kategori' => $d->id_kategori]) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('admin.kategori.destroy', ['kategori' => $d->id_kategori]) }}" method="POST" style="display:inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus kategori ini?')">Hapus</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-
-    {!! $data->links() !!}
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Kode Alat</th>
+                        <th>Nama Alat</th>
+                        <th>Kategori</th>
+                        <th>Jumlah</th>
+                        <th>Kondisi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($data)): ?>
+                        <?php $no = 1; foreach ($data as $row): ?>
+                        <tr>
+                            <td><?= $no++ ?></td>
+                            <td><?= $row->kode_alat ?? '' ?></td>
+                            <td><?= $row->nama_alat ?? '' ?></td>
+                            <td><?= $row->kategori ?? '' ?></td>
+                            <td><?= $row->jumlah ?? '' ?></td>
+                            <td><?= $row->kondisi ?? '' ?></td>
+                            <td>
+                                <a href="<?= route('alat.edit', [$row->id_alat]) ?>" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="<?= route('alat.destroy', [$row->id_alat]) ?>" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                    <!-- Pengganti csrf_field() agar tidak error undefined function -->
+                                    <input type="hidden" name="_token" value="<?= $_SESSION['_token'] ?? '' ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7" class="text-center">Tidak ada data alat.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-@endsection
+<?php \Sakuci\View::stopSection(); ?>

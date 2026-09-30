@@ -14,14 +14,24 @@
                     <label class="form-label">Nama Alat</label>
                     <input type="text" name="nama_alat" class="form-control" required>
                 </div>
+
                 <div class="mb-3">
-                    <label class="form-label">Kategori</label>
-                    <input type="text" name="kategori" class="form-control" placeholder="Misal: Elektronik, Olahraga, Kebersihan" required>
+                    <label for="kategori" class="form-label">Kategori</label>
+                    <select name="kategori" id="kategori" class="form-control" required>
+                        <option value="">-- Pilih Kategori --</option>
+                        @if(isset($kategoris))
+                            @foreach($kategoris as $kat)
+                                <option value="{{ $kat->nama_kategori }}">{{ $kat->nama_kategori }}</option>
+                            @endforeach
+                        @endif
+                    </select>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">Jumlah</label>
                     <input type="number" name="jumlah" class="form-control" min="1" required>
                 </div>
+
                 <div class="mb-3">
                     <label class="form-label">Kondisi</label>
                     <select name="kondisi" class="form-select" required>
@@ -30,6 +40,7 @@
                         <option value="Rusak Berat">Rusak Berat</option>
                     </select>
                 </div>
+
                 <div class="d-flex justify-content-between mt-4">
                     <a href="{{ route('alat.index') }}" class="btn btn-secondary">Batal</a>
                     <button type="submit" class="btn btn-primary">Simpan Alat</button>
