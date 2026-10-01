@@ -2,25 +2,23 @@
 
 namespace App\Models;
 
-use Sakuci\Database\Model;
-
-class Alat extends Model
+class Alat extends \Core\Database\Model
 {
-    protected static ?string $table = 'alat';
-    protected string $primaryKey = 'id_alat';
+    public $timestamps = false;
 
-    protected array $fillable = [
+    protected $table = 'alat';
+    
+    public $kategori;
+    public $nama_alat;
+    public $kode_alat;
+    public $kondisi;
+    public $jumlah;
+
+    protected $fillable = [
+        'kategori',
         'nama_alat',
         'kode_alat',
         'kondisi',
-        'jumlah',
-        'lokasi',
-        'id_kategori'
+        'jumlah'
     ];
-
-    
-    public function kategori()
-    {
-        return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
-    }
 }

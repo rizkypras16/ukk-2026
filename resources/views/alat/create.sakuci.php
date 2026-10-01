@@ -15,9 +15,13 @@
                             <label for="kategori" class="form-label">Kategori Alat</label>
                             <select name="kategori" id="kategori" class="form-select bg-dark text-white border-secondary" required>
                                 <option value="">-- Pilih Kategori --</option>
-                                @foreach ($kategori as $kat)
-                                    <option value="{{ $kat->nama_kategori ?? $kat->id }}">{{ $kat->nama_kategori ?? $kat->nama }}</option>
-                                @endforeach
+                                @if(isset($kategori))
+                                    @foreach ($kategori as $kat)
+                                        <option value="{{ $kat->nama_kategori ?? $kat->nama ?? $kat->id }}">
+                                            {{ $kat->nama_kategori ?? $kat->nama ?? $kat->id }}
+                                        </option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
 
