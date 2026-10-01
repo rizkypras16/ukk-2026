@@ -1,322 +1,198 @@
 @php
-    // Koneksi database menggunakan PDO standar tanpa ketergantungan framework lama
+    $currentUser = \App\Models\User::current();
+    
+    // Cek status database secara aman
     $dbConnected = false;
     try {
-        $host = 'localhost';
-        $dbname = 'db_db_rizky';
-        $username = 'root';
-        $password = '';
-        
-        $envPath = __DIR__ . '/../../.env';
-        if (file_exists($envPath)) {
-            $env = parse_ini_file($envPath);
-            $host = $env['DB_HOST'] ?? 'localhost';
-            $dbname = $env['DB_DATABASE'] ?? 'db_db_rizky';
-            $username = $env['DB_USERNAME'] ?? 'root';
-            $password = $env['DB_PASSWORD'] ?? '';
-        }
-
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]);
+        \Sakuci\Database\Connection::pdo();
         $dbConnected = true;
     } catch (\Throwable $e) {
         $dbConnected = false;
     }
-
-    // Mengambil data user yang sedang login dengan aman
-    $currentUser = class_exists('\App\Models\User') && method_exists('\App\Models\User', 'current') 
-        ? \App\Models\User::current() 
-        : null;
-    $userRole = strtolower($currentUser->role ?? '');
 @endphp
 
-<!-- Modern Glassmorphism Navbar -->
-<nav class="navbar navbar-dark navbar-custom sticky-top py-3">
-    <div class="container">
-        <!-- Bagian Kiri: Tombol Garis Tiga (Menu Sidebar) & Brand SARPRAS -->
-        <div class="d-flex align-items-center gap-3">
-            @if ($currentUser)
-                <button class="btn-menu-toggle d-flex align-items-center justify-content-center shadow-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-label="Buka Menu Sidebar">
-                    <i class="fas fa-bars fa-lg"></i>
-                </button>
-            @endif
+{{-- Header Atas / Topbar --}}
+<header class="navbar navbar-expand bg-body border-bottom sticky-top shadow-sm py-2 px-3">
+    <div class="container-fluid">
+        <div class="d-flex align-items-center gap-2">
+            {{-- Tombol Buka Sidebar Menu (Garis 3 / Hamburger Menu) --}}
+            <button class="btn btn-outline-secondary border-0 d-flex align-items-center justify-content-center p-2 rounded-3 text-body" 
+                    type="button" 
+                    data-bs-toggle="offcanvas" 
+                    data-bs-target="#sidebarMenu" 
+                    aria-controls="sidebarMenu"
+                    aria-label="Buka Menu Sidebar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
 
-            <!-- Status Indikator & Brand SARPRAS -->
-            <div class="d-flex align-items-center gap-2 px-3 py-1.5 rounded-pill status-badge" title="{{ $dbConnected ? 'Database Terhubung' : 'Database Terputus' }}">
-                <span class="pulse-dot {{ $dbConnected ? 'bg-success' : 'bg-danger' }}"></span>
-                <a class="navbar-brand fw-bold m-0 text-white tracking-wide text-decoration-none fs-5" href="{{ route('home') }}">
-                    SARPRAS
-                </a>
-            </div>
+            {{-- Nama Aplikasi --}}
+            <a class="navbar-brand fw-bold m-0 d-flex flex-column text-body ms-1" href="{{ route('home') }}">
+                <span class="fs-6 d-block lh-1 fw-bold text-body">{{ config('app.name') }}</span>
+                <small class="text-body-secondary fw-normal mt-1" style="font-size: 0.7rem;">Sarana & Prasarana</small>
+            </a>
         </div>
 
-        <!-- Bagian Kanan: Autentikasi / Profil -->
-        <div class="d-flex align-items-center gap-3">
-            @if ($currentUser)
-                <div class="d-none d-md-flex align-items-center gap-2 user-chip px-3 py-1.5 rounded-pill">
-                    <div class="user-avatar-initials">
-                        <?= strtoupper(substr($currentUser->username ?? 'U', 0, 1)) ?>
-                    </div>
-                    <div class="text-start">
-                        <span class="d-block text-white fw-semibold small lh-1"><?= htmlspecialchars($currentUser->username) ?></span>
-                        <span class="text-muted text-uppercase x-small"><?= htmlspecialchars($currentUser->role) ?></span>
-                    </div>
-                </div>
+        {{-- Aksi Kanan Topbar --}}
+        <div class="ms-auto d-flex align-items-center gap-2">
+            {{-- Tombol Ganti Tema --}}
+            <button id="themeToggle" type="button" class="btn btn-sm btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center p-2 text-body" 
+                    title="Ganti Tema Terang/Gelap" style="width: 36px; height: 36px;">
+                <i class="bi bi-moon-stars fs-6"></i>
+            </button>
 
-                <form method="POST" action="{{ route('logout') }}" class="m-0">
-                    @csrf
-                    <button type="submit" class="btn btn-sm btn-outline-danger px-3 rounded-pill fw-medium btn-logout-hover">
-                        <i class="fas fa-sign-out-alt me-1"></i> Keluar
-                    </button>
-                </form>
+            @if ($currentUser)
+                <span class="badge bg-body-tertiary text-body border px-3 py-2 d-none d-sm-inline-flex align-items-center gap-2 fw-semibold">
+                    <i class="bi bi-person-circle text-primary"></i> {{ $currentUser->username }}
+                </span>
             @else
-                <div class="d-flex align-items-center gap-2">
-                    <a class="btn btn-sm btn-link text-white text-decoration-none px-3 fw-medium" href="{{ route('login') }}">Masuk</a>
-                    <a class="btn btn-sm btn-gradient px-4 rounded-pill fw-semibold text-white shadow-sm" href="{{ route('register') }}">Daftar Akun</a>
-                </div>
+                <a class="btn btn-sm btn-primary rounded-pill px-3 d-inline-flex align-items-center gap-2 shadow-sm py-2 fw-semibold" href="{{ route('login') }}">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    <span>Masuk</span>
+                </a>
             @endif
         </div>
     </div>
-</nav>
+</header>
 
-{{-- Modern Offcanvas Sidebar --}}
-@if ($currentUser)
-<div class="offcanvas offcanvas-start offcanvas-custom text-white shadow-lg" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
-    <div class="offcanvas-header border-bottom border-dark px-4 py-4">
-        <div class="d-flex align-items-center gap-3">
-            <div class="sidebar-brand-icon">
-                <i class="fas fa-boxes text-info"></i>
-            </div>
-            <div>
-                <h5 class="offcanvas-title fw-bold text-white mb-0" id="sidebarMenuLabel">SARPRAS</h5>
-                <span class="text-muted small">Manajemen Sarana & Prasarana</span>
-            </div>
-        </div>
-        <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
+{{-- Drawer Sidebar Offcanvas --}}
+<div class="offcanvas offcanvas-start bg-body text-body border-end" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel" style="width: 280px;">
     
-    <div class="offcanvas-body d-flex flex-column justify-content-between px-3 py-4">
-        <ul class="nav nav-pills flex-column gap-1.5">
-            <li class="nav-item">
-                <a class="nav-link text-white sidebar-item d-flex align-items-center gap-3 px-3 py-2.5" href="{{ route('home') }}">
-                    <i class="fas fa-home fa-fw text-secondary"></i>
-                    <span>Beranda Utama</span>
-                </a>
+    {{-- Header Sidebar --}}
+    <div class="offcanvas-header border-bottom p-3">
+        <div>
+            <h5 class="offcanvas-title fs-6 fw-bold text-body lh-1" id="sidebarMenuLabel">{{ config('app.name') }}</h5>
+            <small class="text-body-secondary d-block mt-1" style="font-size: 0.72rem;">Sarana & Prasarana Sekolah</small>
+        </div>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Tutup"></button>
+    </div>
+
+    {{-- Body / Menu Navigasi Sidebar --}}
+    <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
+        
+        <ul class="nav nav-pills flex-column gap-2">
+        
+          {{-- SEKSI 1: NAVIGASI UTAMA --}}
+            <li class="nav-item mb-1">
+                <small class="text-uppercase text-body-secondary fw-bold px-2 mb-1 d-block" style="font-size: 0.68rem; letter-spacing: 0.5px;">Navigasi Utama</small>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link text-white sidebar-item d-flex align-items-center gap-3 px-3 py-2.5" href="{{ $userRole === 'admin' ? route('admin.dashboard') : route('dashboard') }}">
-                    <i class="fas fa-chart-pie fa-fw text-secondary"></i>
-                    <span>Halaman Dashboard</span>
+                <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 {{ is_route('home') ? 'active fw-semibold' : 'text-body hover-bg' }}" href="{{ route('home') }}">
+                    <i class="bi bi-house-door fs-5"></i>
+                    <span>Beranda</span>
                 </a>
             </li>
 
-            <!-- Garis Pemisah Menu -->
-            <div class="my-2 border-top border-dark opacity-50"></div>
-
-            {{-- MENU KHUSUS ADMIN --}}
-            @if ($userRole === 'admin')
-                <div class="px-3 pb-1 text-uppercase text-muted x-small fw-bold tracking-wider">Administrator</div>
+            {{-- Menu Kategori HANYA TAMPIL UNTUK ADMIN --}}
+            @if ($currentUser && isset($currentUser->role) && $currentUser->role === 'admin')
                 <li class="nav-item">
-                    <a class="nav-link text-white sidebar-item d-flex align-items-center gap-3 px-3 py-2.5" href="{{ route('kategori.index') }}">
-                        <i class="fas fa-tags fa-fw text-primary"></i>
-                        <span>Kelola Kategori</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white sidebar-item d-flex align-items-center gap-3 px-3 py-2.5" href="{{ route('alat.index') }}">
-                        <i class="fas fa-boxes fa-fw text-primary"></i>
-                        <span>Kelola Alat</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white sidebar-item d-flex align-items-center gap-3 px-3 py-2.5" href="{{ route('pengguna.index') }}">
-                        <i class="fas fa-users-cog fa-fw text-primary"></i>
-                        <span>Manajemen Pengguna</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white sidebar-item d-flex align-items-center gap-3 px-3 py-2.5" href="{{ route('admin.pengaduan.index') }}">
-                        <i class="fas fa-clipboard-list fa-fw text-primary"></i>
-                        <span>Daftar Pengaduan</span>
+                    <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 {{ is_route('kategori.index') ? 'active fw-semibold' : 'text-body hover-bg' }}" href="{{ route('kategori.index') }}">
+                        <i class="bi bi-grid fs-5"></i>
+                        <span>Kategori</span>
                     </a>
                 </li>
             @endif
 
-            {{-- MENU UNTUK SISWA --}}
-            @if ($userRole === 'siswa')
-                <div class="px-3 pb-1 text-uppercase text-muted x-small fw-bold tracking-wider">Menu Siswa</div>
+            {{-- Menu Pengguna HANYA TAMPIL UNTUK ADMIN --}}
+            @if ($currentUser && isset($currentUser->role) && $currentUser->role === 'admin')
                 <li class="nav-item">
-                    <a class="nav-link text-white sidebar-item d-flex align-items-center gap-3 px-3 py-2.5" href="{{ route('pengaduan.create') }}">
-                        <i class="fas fa-plus-circle fa-fw text-success"></i>
-                        <span>Buat Pengaduan Baru</span>
+                    <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 {{ is_route('pengguna.index') ? 'active fw-semibold' : 'text-body hover-bg' }}" href="{{ route('pengguna.index') }}">
+                        <i class="bi bi-people fs-5"></i>
+                        <span>Pengguna</span>
                     </a>
                 </li>
+            @endif
+
+            {{-- Menu Alat HANYA TAMPIL SETELAH LOGIN --}}
+            @if ($currentUser)
                 <li class="nav-item">
-                    <a class="nav-link text-white sidebar-item d-flex align-items-center gap-3 px-3 py-2.5" href="{{ route('pengaduan.index') }}">
-                        <i class="fas fa-history fa-fw text-success"></i>
-                        <span>Riwayat Pengaduan</span>
+                    <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 {{ is_route('alat.index') ? 'active fw-semibold' : 'text-body hover-bg' }}" href="{{ route('alat.index') }}">
+                        <i class="bi bi-tools fs-5"></i>
+                        <span>Alat</span>
                     </a>
+                </li>
+            @endif
+
+            {{-- Menu Aspirasi HANYA TAMPIL SETELAH LOGIN --}}
+            @if ($currentUser)
+                @php
+                    $aspirasiRoute = (isset($currentUser->role) && $currentUser->role === 'admin') 
+                        ? route('admin.aspirasi.index') 
+                        : route('aspirasi.index');
+                @endphp
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 {{ is_route('aspirasi.index', 'admin.aspirasi.index') ? 'active fw-semibold' : 'text-body hover-bg' }}" href="{{ $aspirasiRoute }}">
+                        <i class="bi bi-chat-left-text fs-5"></i>
+                        <span>Aspirasi</span>
+                    </a>
+                </li>
+            @endif
+
+            @if ($currentUser)
+                <li class="nav-item mt-2 pt-2 border-top">
+                    <small class="text-uppercase text-body-secondary fw-bold px-2 mb-1 d-block" style="font-size: 0.68rem; letter-spacing: 0.5px;">Panel Kontrol</small>
+                </li>
+                <li class="nav-item">
+                    {{-- DIUBAH MENGGUNAKAN URL LANGSUNG AGAR MASUK KE HALAMAN ADMIN / DASHBOARD YANG BENAR --}}
+                    <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 text-body hover-bg"
+   href="{{ isset($currentUser->role) && $currentUser->role === 'admin' ? url('/aspirasi') : url('/dashboard') }}">
+    <i class="bi bi-speedometer2 fs-5"></i>
+    <span>Dashboard</span>
+</a>
                 </li>
             @endif
         </ul>
 
-        <!-- Info Sesi Pengguna di Bawah Sidebar -->
-        <div class="user-card-footer p-3 rounded-4 mt-auto">
-            <div class="d-flex align-items-center gap-3">
-                <div class="user-avatar-lg">
-                    <?= strtoupper(substr($currentUser->username ?? 'U', 0, 1)) ?>
+        {{-- Footer Sidebar --}}
+        <div class="border-top pt-3 mt-3">
+            @if ($currentUser)
+                <div class="mb-3 px-2 d-flex align-items-center gap-3">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-2 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">
+                        <i class="bi bi-person-fill fs-5"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <div class="fw-bold text-truncate text-body" style="font-size: 0.875rem;">{{ $currentUser->username }}</div>
+                        <div class="text-body-secondary small text-capitalize" style="font-size: 0.75rem;">{{ $currentUser->role ?? 'Siswa' }}</div>
+                    </div>
                 </div>
-                <div class="overflow-hidden">
-                    <p class="small text-muted mb-0">Masuk sebagai:</p>
-                    <p class="fw-bold mb-0 text-truncate text-white"><?= htmlspecialchars($currentUser->username) ?></p>
-                    <span class="badge bg-secondary-subtle text-light x-small mt-1 px-2 py-0.5 rounded-pill"><?= ucfirst($currentUser->role) ?></span>
+
+                <form method="POST" action="{{ route('logout') }}" class="w-100">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger w-100 rounded-3 py-2 d-flex align-items-center justify-content-center gap-2 fw-semibold">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Keluar</span>
+                    </button>
+                </form>
+            @else
+                @php
+                    $canRegister = false;
+                    if ($dbConnected) {
+                        try {
+                            $canRegister = \App\Models\Role::where('can_register', 1)->exists();
+                        } catch (\Throwable $e) {
+                            $canRegister = false;
+                        }
+                    }
+                @endphp
+
+                <div class="d-flex flex-column gap-2">
+                    @if ($canRegister)
+                        <a class="btn btn-outline-secondary text-body w-100 rounded-3 py-2 text-center fw-semibold" href="{{ route('register') }}">
+                            Daftar Akun
+                        </a>
+                    @endif
+                    
+                    <a class="btn btn-primary w-100 rounded-3 py-2 d-flex align-items-center justify-content-center gap-2 shadow-sm fw-semibold" href="{{ route('login') }}">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Masuk</span>
+                    </a>
                 </div>
-            </div>
+            @endif
         </div>
+
     </div>
 </div>
-@endif
-
-<style>
-    /* Styling Navbar Modern */
-    .navbar-custom {
-        background: rgba(15, 17, 21, 0.9) !important;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    /* Tombol Garis Tiga (Hamburger Menu) yang Menonjol & Keren */
-    .btn-menu-toggle {
-        width: 42px;
-        height: 42px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(59, 130, 246, 0.15));
-        border: 1px solid rgba(56, 189, 248, 0.3);
-        color: #38bdf8;
-        transition: all 0.25s ease;
-    }
-    .btn-menu-toggle:hover {
-        background: linear-gradient(135deg, #38bdf8, #3b82f6);
-        color: #ffffff;
-        border-color: transparent;
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
-    }
-
-    /* Indikator Status Database */
-    .status-badge {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .pulse-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        display: inline-block;
-        animation: pulse-animation 2s infinite;
-    }
-    @keyframes pulse-animation {
-        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.6); }
-        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
-        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
-    }
-
-    /* User Chip di Navbar */
-    .user-chip {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .user-avatar-initials {
-        width: 30px;
-        height: 30px;
-        background: linear-gradient(135deg, #6366f1, #3b82f6);
-        color: white;
-        font-weight: bold;
-        font-size: 0.8rem;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Tombol Gradasi */
-    .btn-gradient {
-        background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
-        border: none;
-        transition: all 0.3s ease;
-    }
-    .btn-gradient:hover {
-        background: linear-gradient(135deg, #4338ca 0%, #2563eb 100%);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    }
-
-    .btn-logout-hover {
-        transition: all 0.2s ease;
-    }
-    .btn-logout-hover:hover {
-        background-color: #dc3545 !important;
-        color: white !important;
-    }
-
-    /* Offcanvas Sidebar Styling */
-    .offcanvas-custom {
-        background-color: #0b0d10 !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.08);
-        max-width: 300px;
-    }
-    .sidebar-brand-icon {
-        width: 40px;
-        height: 40px;
-        background: rgba(56, 189, 248, 0.1);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgba(56, 189, 248, 0.2);
-    }
-
-    /* Item Sidebar Hover Efek */
-    .sidebar-item {
-        border-radius: 10px;
-        transition: all 0.2s ease;
-        font-size: 0.92rem;
-        color: #94a3b8 !important;
-    }
-    .sidebar-item:hover {
-        background-color: rgba(255, 255, 255, 0.06) !important;
-        color: #ffffff !important;
-        transform: translateX(4px);
-    }
-    .sidebar-item.active {
-        background: linear-gradient(135deg, rgba(79, 70, 229, 0.2), rgba(59, 130, 246, 0.2)) !important;
-        color: #ffffff !important;
-        border: 1px solid rgba(99, 102, 241, 0.3);
-    }
-
-    /* Footer di dalam Sidebar */
-    .user-card-footer {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .user-avatar-lg {
-        width: 42px;
-        height: 42px;
-        background: linear-gradient(135deg, #6366f1, #a855f7);
-        color: white;
-        font-weight: bold;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .x-small { font-size: 0.75rem; }
-    .tracking-wide { letter-spacing: 0.5px; }
-    .tracking-wider { letter-spacing: 1px; }
-</style>
