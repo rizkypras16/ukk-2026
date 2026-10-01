@@ -4,127 +4,87 @@ namespace App\Controllers;
 
 use Sakuci\Controller;
 use Sakuci\Http\Request;
-use PDO;
-use PDOException;
+use App\Models\Alat;
+use App\Models\Kategori; // Jangan lupa import model Kategori di sini
 
 class AlatController extends Controller
+{ 
+   public function index(Request $request)
 {
-    private function getDB()
-    {
-        $envPath = __DIR__ . '/../../.env';
-        $host = 'localhost';
-        $dbname = 'db_db_rizky';
-        $username = 'root';
-        $password = '';
+    $data = Alat::orderBy('id_alat', 'desc')->paginate(5); 
 
-        if (file_exists($envPath)) {
-            $env = parse_ini_file($envPath);
-            $host = $env['DB_HOST'] ?? 'localhost';
-            $dbname = $env['DB_DATABASE'] ?? 'db_db_rizky';
-            $username = $env['DB_USERNAME'] ?? 'root';
-            $password = $env['DB_PASSWORD'] ?? '';
-        }
-
-        try {
-            return new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ
-            ]);
-        } catch (PDOException $e) {
-            die("Koneksi Database Gagal: " . $e->getMessage());
-        }
-    }
-
-    public function index(Request $request)
-{
-    $pdo = $this->getDB();
-    $stmt = $pdo->query("SELECT * FROM alat ORDER BY id_alat DESC");
-    $data = $stmt->fetchAll();
-
-    return $this->view('alat.index', compact('data'));
+    return view('alat.index', compact('data'));
 }
-
+   
     public function create(Request $request)
     {
-        $pdo = $this->getDB();
-        $stmt = $pdo->query("SELECT * FROM kategori");
-        $kategoris = $stmt->fetchAll();
+        // Mengambil semua data kategori untuk isi opsi dropdown
+        $kategori = Kategori::all();
 
-        return $this->view('alat.create', compact('kategoris'));
+        return view('alat.create', compact('kategori'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama_alat' => 'required|string|max:255',
-            'kategori'  => 'required|string',
-            'jumlah'    => 'required|numeric',
-            'kondisi'   => 'required|string',
+            'id_kategori' => 'required|numeric',
+            'nama_alat'   => 'required|string|max:255',
+            'kode_alat'   => 'required|string|unique:alat,kode_alat',
+            'kondisi'     => 'required|string|max:50',
+            'jumlah'      => 'required|numeric',
+            'lokasi'      => 'required|string|max:255',
         ]);
 
-        $pdo = $this->getDB();
-        $stmt = $pdo->query("SELECT kode_alat FROM alat ORDER BY id_alat DESC LIMIT 1");
-        $terakhir = $stmt->fetch();
-        
-        $nomorUrut = ($terakhir && isset($terakhir->kode_alat)) 
-            ? ((int) substr($terakhir->kode_alat, 3)) + 1 
-            : 1;
-        $kodeOtomatis = 'ALT' . sprintf("%03d", $nomorUrut);
-
-        $sql = "INSERT INTO alat (kode_alat, nama_alat, kategori, jumlah, kondisi) VALUES (:kode, :nama, :kategori, :jumlah, :kondisi)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'kode'     => $kodeOtomatis,
-            'nama'     => $request->input('nama_alat'),
-            'kategori' => $request->input('kategori'),
-            'jumlah'   => $request->input('jumlah'),
-            'kondisi'  => $request->input('kondisi'),
+        Alat::create([
+            'id_kategori' => $request->id_kategori,
+            'nama_alat'   => $request->nama_alat,
+            'kode_alat'   => $request->kode_alat,
+            'kondisi'     => $request->kondisi,
+            'jumlah'      => $request->jumlah,
+            'lokasi'      => $request->lokasi,
         ]);
 
-        return redirect()->route('alat.index')->with('success', 'Data alat berhasil ditambahkan.');
+        return redirect()->route('alat.index')->with('success', 'Data alat berhasil ditambahkan');
     }
 
-    public function edit($id_alat)
+    public function edit($alat)
     {
-        $pdo = $this->getDB();
-        $stmt = $pdo->prepare("SELECT * FROM alat WHERE id_alat = ?");
-        $stmt->execute([$id_alat]);
-        $alat = $stmt->fetch();
+        $data_alat = Alat::where('id_alat', $alat)->first();
+        $kategori = Kategori::all(); // Ambil semua kategori untuk dropdown di halaman edit
 
-        $stmtKat = $pdo->query("SELECT * FROM kategori");
-        $kategoris = $stmtKat->fetchAll();
-
-        return $this->view('alat.edit', compact('alat', 'kategoris'));
+        return view('alat.edit', compact('data_alat', 'kategori'));
     }
 
-    public function update(Request $request, $id_alat)
+    public function update(Request $request, $alat)
     {
         $request->validate([
-            'nama_alat' => 'required|string|max:255',
-            'kategori'  => 'required|string',
-            'jumlah'    => 'required|numeric',
-            'kondisi'   => 'required|string',
+            'id_kategori' => 'required|numeric',
+            'nama_alat'   => 'required|string|max:255',
+            'kode_alat'   => 'required|string|unique:alat,kode_alat,' . $alat . ',id_alat',
+            'kondisi'     => 'required|string|max:50',
+            'jumlah'      => 'required|numeric',
+            'lokasi'      => 'required|string|max:255',
         ]);
 
-        $pdo = $this->getDB();
-        $sql = "UPDATE alat SET nama_alat = :nama, kategori = :kategori, jumlah = :jumlah, kondisi = :kondisi WHERE id_alat = :id";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            'nama'     => $request->input('nama_alat'),
-            'kategori' => $request->input('kategori'),
-            'jumlah'   => $request->input('jumlah'),
-            'kondisi'  => $request->input('kondisi'),
-            'id'       => $id_alat
+        $data_alat = Alat::where('id_alat', $alat)->first();
+        $data_alat->update([
+            'id_kategori' => $request->id_kategori,
+            'nama_alat'   => $request->nama_alat,
+            'kode_alat'   => $request->kode_alat,
+            'kondisi'     => $request->kondisi,
+            'jumlah'      => $request->jumlah,
+            'lokasi'      => $request->lokasi,
         ]);
 
-        return redirect()->route('alat.index')->with('success', 'Data alat berhasil diperbarui.');
+        return redirect()->route('alat.index')->with('success', 'Data alat berhasil diperbarui');
     }
 
-    public function destroy($id_alat)
+    public function destroy(Request $request, $id)
     {
-        $pdo = $this->getDB();
-        $stmt = $pdo->prepare("DELETE FROM alat WHERE id_alat = ?");
-        $stmt->execute([$id_alat]);
+        $alat = Alat::where('id_alat', $id)->first();
+        if ($alat) {
+            $alat->delete();
+        }
 
         return redirect()->route('alat.index')->with('success', 'Data alat berhasil dihapus.');
     }

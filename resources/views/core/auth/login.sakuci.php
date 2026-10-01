@@ -11,8 +11,8 @@
                 <!-- Alert Demo -->
                 <div class="alert alert-dark border border-secondary border-opacity-25 text-light mb-3 rounded-3 p-3">
                     <span class="d-block fw-bold text-info mb-1 small">AKUN DEMO:</span>
-                    <span class="text-muted small">Admin:</span> <code class="text-light">admin</code> / <code class="text-light">admin123</code><br>
-                    <span class="text-muted small">Siswa:</span> <code class="text-light">siswa</code> / <code class="text-light">siswa123</code>
+                    <span class="text-muted small">Admin:</span> <code class="text-light">admin</code> / <code class="text-light">rahasia123</code><br>
+                    <span class="text-muted small">Nis Anda</span> <code class="text-light">nis anda</code> / <code class="text-light">siswa123</code>
                 </div>
 
                 <!-- Card Login -->
@@ -27,7 +27,7 @@
                         <form method="POST" action="{{ route('login.attempt') }}">
                             @csrf
                             <div class="mb-3">
-                                <label class="form-label text-muted small">Username / NIS</label>
+                                <label class="form-label text-muted small">NIS</label>
                                 <input type="text" name="username" class="form-control bg-black text-light border-secondary border-opacity-50 rounded-2" required autofocus>
                             </div>
                             <div class="mb-3">

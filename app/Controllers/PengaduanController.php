@@ -49,7 +49,8 @@ class PengaduanController extends Controller
             $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
             $fotoName = time() . '_' . uniqid() . '.' . $ext;
             
-            $uploadDir = public_path('uploads/pengaduan');
+            // Perbaikan path upload tanpa public_path()
+            $uploadDir = __DIR__ . '/../../public/uploads/pengaduan';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -58,14 +59,14 @@ class PengaduanController extends Controller
         }
 
         Pengaduan::create([
-            'user_id'         => $currentUser->id ?? session('user_id'),
-            'id_alat'         => $request->input('id_alat'),
-            'rincian_laporan' => $request->input('rincian_laporan'),
-            'foto'            => $fotoName,
-            'status'          => 'Pending'
+            'user_id'   => $currentUser->id ?? session('user_id'),
+            'id_alat'   => $request->input('id_alat'),
+            'keluhan'   => $request->input('rincian_laporan'), // Mengubah rincian_laporan menjadi keluhan sesuai database
+            'foto'      => $fotoName,
+            'status'    => 'Pending'
         ]);
 
-        return redirect()->route('pengaduan.riwayat')->with('success', 'Pengaduan berhasil dikirim.');
+        return redirect()->route('pengaduan.index')->with('success', 'Pengaduan berhasil dikirim.');
     }
 
     // Menghapus pengaduan
@@ -75,7 +76,8 @@ class PengaduanController extends Controller
 
         if ($pengaduan) {
             if ($pengaduan->foto) {
-                $filePath = public_path('uploads/pengaduan/' . $pengaduan->foto);
+                // Perbaikan path hapus file foto tanpa public_path()
+                $filePath = __DIR__ . '/../../public/uploads/pengaduan/' . $pengaduan->foto;
                 if (file_exists($filePath)) {
                     unlink($filePath);
                 }

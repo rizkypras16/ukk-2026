@@ -26,7 +26,7 @@
                             <select name="id_alat" id="id_alat" class="form-select bg-dark text-white border-secondary" required>
                                 <option value="">-- Pilih Alat --</option>
                                 @foreach ($alat as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama_alat ?? $item->nama }}</option>
+                                    <option value="{{ $item->id_alat }}">{{ $item->nama_alat ?? $item->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -40,8 +40,6 @@
                             <label for="foto" class="form-label">Foto Bukti Kerusakan (Opsional)</label>
                             <input type="file" name="foto" id="foto" class="form-control bg-dark text-white border-secondary" accept="image/png, image/jpeg, image/jpg">
                         </div>
-
-                        
 
                         <button type="submit" class="btn btn-primary w-100">Kirim Pengaduan</button>
                     </form>
