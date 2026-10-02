@@ -11,15 +11,14 @@
                 @csrf
                 @method('PUT')
                 
-                <div class="form-group mb-3">
-                    <label for="nama_kategori" class="form-label">Nama Kategori / Keterangan</label>
-                    {{-- Menggunakan $kategori->nama_lengkap agar data lama otomatis terisi --}}
-                    <input type="text" 
-                           class="form-control" 
-                           id="nama_kategori" 
-                           name="nama_kategori"
-                           value="{{ old('nama_kategori', $kategori->nama_lengkap) }}" 
-                           required>
+                <<div class="form-group mb-3">
+                <label for="kategori" class="form-label">Nama Kategori</label>
+                <input type="text"
+                class="form-control"
+                id="kategori"
+                name="kategori"
+                value="{{ old('kategori', $kategori->kategori) }}"
+                required>
                 </div>
 
                 <div class="d-flex gap-2">

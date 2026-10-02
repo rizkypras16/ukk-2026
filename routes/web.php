@@ -45,7 +45,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 Route::group(['middleware' => 'auth'], function () {
     // Lihat Daftar Alat & Kategori untuk Siswa
     Route::get('/alat', [AlatController::class, 'index'])->name('alat.index');
-    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index');
+    Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.index')->name('admin.kategori.index');
 
     // Pengelolaan Aspirasi & Alias Pengaduan
     Route::get('/aspirasi', [AspirasiController::class, 'index'])->name('aspirasi.index')->name('pengaduan.index');

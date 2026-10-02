@@ -19,11 +19,11 @@ class AspirasiController extends Controller
         return view('aspirasi.index', compact('data'));
     }
 
-    // FORM TAMBAH ASPIRASI
     public function create()
+
     {
-        $kategori = Kategori::all();
-        return view('aspirasi.create', compact('kategori'));
+    $kategori = Kategori::all();
+    return view('aspirasi.create', compact('kategori'));
     }
 
     // SIMPAN DATA + UPLOAD FOTO

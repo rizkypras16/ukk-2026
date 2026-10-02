@@ -44,7 +44,7 @@
                                         <option value="" class="bg-body text-body">-- Pilih Kategori --</option>
                                         @foreach ($kategori as $k)
                                             <option value="{{ $k->id_kategori }}" class="bg-body text-body" {{ old('id_kategori') == $k->id_kategori ? 'selected' : '' }}>
-                                                {{ $k->nama_kategori }}
+                                                {{ $k->kategori }}
                                             </option>
                                         @endforeach
                                     </select>

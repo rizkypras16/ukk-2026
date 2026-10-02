@@ -27,16 +27,16 @@
                 @csrf
 
                 <div class="form-group mb-3">
-    <label for="id_kategori">Kategori <span class="text-danger">*</span></label>
-    <select name="id_kategori" id="id_kategori" class="form-control" style="color: #000 !important; background-color: #fff !important;" required>
-        <option value="" style="color: #000 !important; background-color: #fff !important;">-- Pilih Kategori --</option>
-        @foreach($kategori as $item)
-            <option value="{{ $item->id_kategori ?? $item->id }}" style="color: #000 !important; background-color: #fff !important;">
-                {{ $item->nama_kategori ?? $item->nama ?? $item->kategori }}
-            </option>
-        @endforeach
-    </select>
-</div>
+            <label for="id_kategori">Kategori <span class="text-danger">*</span></label>
+            <select name="id_kategori" id="id_kategori" class="form-control" style="color: #000 !important; background-color: #fff !important;" required>
+            <option value="" style="color: #000 !important; background-color: #fff !important;">-- Pilih Kategori --</option>
+            @foreach($kategori as $item)
+            <option value="{{ $item->id_kategori }}" style="color: #000 !important; background-color: #fff !important;">{{ $item->kategori }}</option>
+            @endforeach
+
+            
+            </select>
+            </div>
                 <!-- Judul Aspirasi -->
                 <div class="form-group mb-3">
                     <label for="judul">Judul Pengaduan <span class="text-danger">*</span></label>

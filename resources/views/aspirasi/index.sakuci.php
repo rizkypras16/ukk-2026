@@ -42,14 +42,14 @@
                             <tr>
                                 {{-- Nomor Urut --}}
                                 <td class="ps-4 fw-medium text-body-secondary">
-                                    {{ method_exists($aspirasi, 'firstItem') ? $aspirasi->firstItem() + $index : $index + 1 }}
+                                   {{ method_exists($data, 'firstItem') ? $data->firstItem() + $index : $index + 1 }}
                                 </td>
 
                                 {{-- Kategori --}}
                                 <td>
                                     <span class="badge bg-body-tertiary text-body border px-2.5 py-1.5 fw-normal">
                                         <i class="bi bi-tag-fill me-1 text-primary"></i>
-                                        {{ $item->kategori->nama_kategori ?? '-' }}
+                                        {{ $item->kategori->kategori ?? '-' }}
                                     </span>
                                 </td>
 
