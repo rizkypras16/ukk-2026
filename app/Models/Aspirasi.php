@@ -13,4 +13,14 @@ class Aspirasi extends Model
         // Ubah 'id' di parameter ketiga menjadi nama primary key yang benar di tabel kategori (contoh: id_kategori atau id)
         return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
     }
+
+    protected array $fillable = [
+        'user_id',
+        'id_kategori',
+        'id_alat',
+        'judul',
+        'deskripsi',
+        'foto',
+        'status'
+    ];
 }

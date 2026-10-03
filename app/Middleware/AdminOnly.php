@@ -2,7 +2,7 @@
 
 namespace App\Middleware;
 
-/** Hanya role admin yang boleh lewat. Alias 'admin' di config/app.php. */
+// Jika EnsureRole berada di namespace yang sama, pastikan terpanggil atau extend langsung ke Middleware utama jika EnsureRole adalah class abstrak turunan Middleware
 class AdminOnly extends EnsureRole
 {
     protected function roles(): array
@@ -10,4 +10,3 @@ class AdminOnly extends EnsureRole
         return ['admin'];
     }
 }
-

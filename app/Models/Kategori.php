@@ -6,11 +6,11 @@ use Sakuci\Database\Model;
 
 class Kategori extends Model
 {
-    protected static ?string $table = 'kategori';
-    protected string $primaryKey = 'id_kategori';
+    public static ?string $table = 'kategori';
+    protected string $primaryKey = 'id_kategori'; // Hapus kata 'static' agar sesuai dengan class induk Sakuci
 
     protected array $fillable = [
-    'kategori',
-    'keterangan',
+        'kategori',
+        'keterangan',
     ];
 }

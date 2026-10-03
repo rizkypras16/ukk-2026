@@ -91,6 +91,7 @@ class Connection
     {
         return Config::get('database.connections.' . Config::get('database.default', 'sqlite') . '.driver', 'sqlite');
     }
+    
 
     public static function run(string $sql, array $bindings = []): \PDOStatement
     {

@@ -9,13 +9,14 @@ class Alat extends Model
     protected static ?string $table = 'alat';
     protected string $primaryKey = 'id_alat';
 
+    public bool $timestamps = false;
+
     protected array $fillable = [
-        'nama_alat',
         'kode_alat',
-        'kondisi',
+        'nama_alat',
+        'kategori',
         'jumlah',
-        'lokasi',
-        'id_kategori'
+        'kondisi'
     ];
 
     
