@@ -14,11 +14,11 @@
 
         .hero-section {
             position: relative;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(8, 12, 20, 0.98) 100%);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(8, 12, 20, 1) 100%);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 24px;
-            padding: 4rem 2.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            padding: 4.5rem 3rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             overflow: hidden;
             margin-top: 2rem;
             margin-bottom: 2rem;
@@ -27,32 +27,35 @@
         .text-brand-custom {
             color: #38bdf8;
             font-weight: 800;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
         }
 
         .btn-brand-custom {
-            background: #2563eb;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
             color: #ffffff;
             border: none;
             font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            padding: 0.75rem 1.75rem;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            padding: 0.8rem 2rem;
+            box-shadow: 0 4px 15px rgba(37, 99, 235,.3);
         }
 
         .btn-brand-custom:hover {
-            background: #1d4ed8;
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
             color: #fff;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
         }
 
         .btn-login-custom {
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.4);
             color: #38bdf8;
-            background: transparent;
+            background: rgba(56, 189, 248, 0.03);
             font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            padding: 0.75rem 1.75rem;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            padding: 0.8rem 2rem;
         }
 
         .btn-login-custom:hover {
@@ -62,7 +65,7 @@
             transform: translateY(-2px);
         }
 
-        /* --- ANIMASI ILUSTRASI FOTO KARAKTER --- */
+        /* --- DESAIN ELEGAN & MEWAH TANPA ANIMASI --- */
         .teacher-container {
             position: relative;
             width: 100%;
@@ -73,16 +76,15 @@
         }
 
         .teacher-avatar-wrapper {
-            width: 130px;
-            height: 130px;
+            width: 140px;
+            height: 140px;
             background: linear-gradient(135deg, #1e293b, #0f172a);
-            border: 2px solid rgba(56, 189, 248, 0.5);
+            border: 2px solid rgba(56, 189, 248, 0.4);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 25px rgba(56, 189, 248, 0.2);
-            animation: floatTeacher 3s ease-in-out infinite;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.15);
             position: relative;
             z-index: 2;
             overflow: hidden;
@@ -94,25 +96,20 @@
             object-fit: cover;
         }
 
-        @keyframes floatTeacher {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
         .speech-bubble {
             position: absolute;
-            top: 0px;
-            right: 5px;
-            background: rgba(30, 41, 59, 0.95);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 0.75rem 1rem;
-            border-radius: 14px;
-            font-size: 0.82rem;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98));
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 0.85rem 1.15rem;
+            border-radius: 16px;
+            font-size: 0.85rem;
             color: #e2e8f0;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-            max-width: 200px;
-            animation: pulseBubble 3s ease-in-out infinite;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 210px;
             z-index: 3;
+            backdrop-filter: blur(8px);
         }
 
         .speech-bubble::after {
@@ -127,29 +124,26 @@
             width: 0;
         }
 
-        @keyframes pulseBubble {
-            0%, 100% { transform: scale(1); opacity: 0.95; }
-            50% { transform: scale(1.02); opacity: 1; }
-        }
-
         .teacher-badge {
             position: absolute;
-            bottom: 10px;
-            background: rgba(6, 182, 212, 0.15);
+            bottom: 12px;
+            background: rgba(6, 182, 212, 0.12);
             border: 1px solid rgba(6, 182, 212, 0.3);
             color: #38bdf8;
-            font-size: 0.73rem;
-            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            padding: 0.3rem 0.85rem;
             border-radius: 20px;
             font-weight: 600;
             z-index: 3;
+            backdrop-filter: blur(4px);
         }
 
         .procedure-box {
-            background: rgba(15, 23, 42, 0.6);
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.7), rgba(11, 17, 32, 0.8));
             border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 18px;
-            padding: 1.75rem;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
     </style>
 
@@ -160,25 +154,24 @@
                 
                 {{-- KOLOM KIRI: Judul & Tombol Aksi --}}
                 <div class="col-lg-6 text-center text-lg-start">
-                    <span class="text-secondary small fw-semibold text-uppercase tracking-widest d-block mb-2">
+                    <span class="text-secondary small fw-semibold text-uppercase tracking-widest d-block mb-2" style="letter-spacing: 2px;">
                         UKK RPL -- Uji Kompetensi Keahlian
                     </span>
 
-                    <h1 class="display-5 fw-bold mb-3 text-white">
+                    <h1 class="display-5 fw-bold mb-3 text-white" style="letter-spacing: -0.5px;">
                         Pengaduan Sarana & Prasarana <span class="text-brand-custom">Sakuci</span>
                     </h1>
 
-                    <p class="text-secondary mb-4" style="font-size: 0.95rem; line-height: 1.6;">
+                    <p class="text-secondary mb-4" style="font-size: 1rem; line-height: 1.7;">
                         Platform digital resmi untuk pelaporan, pengelolaan, dan pemantauan perbaikan fasilitas atau alat sekolah secara cepat, transparan, dan terstruktur.
                     </p>
 
                     <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
-                        <a class="btn btn-brand-custom shadow-sm" href="{{ route('pengaduan.create') }}">
-                            <i class="bi bi-megaphone-fill me-1"></i> Buat Pengaduan
+                        <a class="btn btn-brand-custom shadow" href="{{ route('pengaduan.create') }}">
+                            <i class="bi bi-megaphone-fill me-2"></i> Buat Pengaduan
                         </a>
                         <a class="btn btn-login-custom shadow-sm" href="/login">
-                        <i class="bi bi-box-arrow-in-right me-1"></i> Masuk Sistem
-
+                            <i class="bi bi-box-arrow-in-right me-2"></i> Masuk Sistem
                         </a>
                     </div>
                 </div>
@@ -205,10 +198,10 @@
 
                             {{-- Teks Panduan --}}
                             <div class="col-md-7">
-                                <h6 class="fw-bold text-white mb-3">
-                                    <i class="bi bi-shield-check text-info me-1"></i> Alur Layanan
+                                <h6 class="fw-bold text-white mb-3" style="letter-spacing: 0.5px;">
+                                    <i class="bi bi-shield-check text-info me-2"></i> Alur Layanan
                                 </h6>
-                                <ul class="list-unstyled text-secondary small mb-0" style="line-height: 1.8;">
+                                <ul class="list-unstyled text-secondary small mb-0" style="line-height: 1.9;">
                                     <li class="mb-2"><strong class="text-white">1.</strong> Login akun siswa.</li>
                                     <li class="mb-2"><strong class="text-white">2.</strong> Pilih alat & isi keluhan.</li>
                                     <li class="mb-2"><strong class="text-white">3.</strong> Kirim laporan kerusakan.</li>
