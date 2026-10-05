@@ -1,4 +1,4 @@
-﻿/*
+/*
 | Lapisan tema di atas Bootstrap.
 | Bootstrap dimuat lebih dulu, file ini hanya menimpa seperlunya.
 */
@@ -256,3 +256,87 @@ code.inline {
     color: #a5b4fc;
 }
 
+/* ===== Sarpras Landing — semua class berawalan "sp-" supaya aman dari Bootstrap ===== */
+.sp{--bg:#fff4dc;--ink:#111;--card:#fff;--coral:#ff5a36;--lime:#c7f23a;--violet:#8b6bff;--sky:#7fd8ff;--amber:#ffc94a;
+ font-family:'Space Grotesk',system-ui,sans-serif;color:var(--ink);line-height:1.5;
+ background-color:var(--bg);background-image:radial-gradient(rgba(0,0,0,.18) 1px,transparent 1px);background-size:26px 26px;
+ border:3px solid var(--ink);border-radius:24px;padding:10px 26px 50px;margin:2rem 0;overflow:hidden}
+.sp *{box-sizing:border-box}
+.sp h1,.sp h2,.sp h3{font-family:'Archivo Black','Space Grotesk',sans-serif;font-weight:400;line-height:1.05;color:var(--ink);margin:0}
+.sp p{margin:0}
+.sp a{text-decoration:none;color:inherit}
+
+/* komponen dasar */
+.sp-box{border:3px solid var(--ink);border-radius:18px;background:var(--card);box-shadow:6px 6px 0 var(--ink)}
+.sp-btn{display:inline-block;padding:14px 26px;border:3px solid var(--ink);border-radius:14px;font-weight:700;background:var(--lime);color:#111!important;box-shadow:5px 5px 0 var(--ink);transition:.15s;cursor:pointer;font-family:inherit;font-size:1rem}
+.sp-btn:hover{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.sp-btn--white{background:#fff}
+.sp-btn--dark{background:#111;color:#fff!important;box-shadow:5px 5px 0 #fff}
+
+/* hero */
+.sp-hero{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:center;padding:40px 0 50px}
+.sp-sticker{display:inline-block;background:var(--violet);color:#111;border:3px solid var(--ink);padding:6px 14px;border-radius:99px;font-weight:700;font-size:.85rem;transform:rotate(-2deg);box-shadow:3px 3px 0 var(--ink);margin-bottom:22px}
+.sp-title{font-size:clamp(2.6rem,7vw,5.4rem);letter-spacing:-.02em}
+.sp-title span{display:inline-block;background:var(--lime);padding:0 12px;border:3px solid var(--ink);border-radius:14px;transform:rotate(-1.5deg);margin:6px 0}
+.sp-title b{font-weight:400;color:var(--coral)}
+.sp-lead{font-size:1.1rem;margin:24px 0 30px!important;max-width:30em}
+.sp-cta{display:flex;gap:14px;flex-wrap:wrap}
+
+/* panel interaktif */
+.sp-panel{padding:20px;transform:rotate(1.5deg)}
+.sp-panel h3{font-size:1rem;margin-bottom:4px}
+.sp-panel small{display:block;margin-bottom:14px;opacity:.7}
+.sp-item{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:3px solid var(--ink);border-radius:12px;margin-bottom:10px;background:var(--bg);cursor:pointer;font-weight:700;transition:.15s;user-select:none}
+.sp-item:hover{transform:translateX(5px)}
+.sp-pill{padding:4px 12px;border:2px solid var(--ink);border-radius:99px;font-size:.78rem;min-width:96px;text-align:center}
+.sp-ok{background:var(--lime)}.sp-warn{background:var(--amber)}.sp-bad{background:var(--coral)}
+.sp-sum{display:flex;gap:8px;margin-top:14px;font-size:.82rem;font-weight:700;flex-wrap:wrap}
+.sp-sum span{border:2px solid var(--ink);border-radius:8px;padding:3px 9px;background:#fff}
+
+/* pita berjalan */
+.sp-tape{background:var(--ink);color:var(--bg);border-block:3px solid var(--ink);overflow:hidden;white-space:nowrap;transform:rotate(-1deg);margin:10px -40px}
+.sp-tape div{display:inline-block;padding:14px 0;font-family:'Archivo Black';font-size:1.25rem;animation:sp-run 24s linear infinite}
+.sp-tape i{font-style:normal;margin:0 22px;color:var(--lime)}
+@keyframes sp-run{to{transform:translateX(-50%)}}
+
+/* section */
+.sp-sec{padding-top:80px}
+.sp .sp-head{font-size:clamp(1.9rem,4.5vw,3.2rem);line-height:1.4;letter-spacing:.01em;margin-bottom:38px;max-width:13em}
+.sp-head mark{display:inline-block;line-height:1.15;background:var(--sky);color:#111;padding:4px 14px;margin:4px 2px;border-radius:12px;border:3px solid var(--ink)}
+
+/* fitur */
+.sp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.sp-feat{padding:26px;position:relative;transition:.2s}
+.sp-feat:hover{transform:translate(-4px,-4px);box-shadow:10px 10px 0 var(--ink)}
+.sp-feat h3{font-size:1.25rem;margin-bottom:10px}
+
+/* peran */
+.sp-tabs{display:flex;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.sp-tab{padding:12px 24px;border:3px solid var(--ink);border-radius:14px;font-weight:700;font-family:inherit;font-size:1rem;background:#fff;color:#111;cursor:pointer;box-shadow:4px 4px 0 var(--ink)}
+.sp-tab.is-on{background:var(--violet)}
+.sp-role{padding:30px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.sp-role h3{font-size:1.8rem}
+.sp-role ul{list-style:none;padding:0;margin:0}
+.sp-role li{padding:10px 0;border-bottom:2px dashed var(--ink);font-weight:500}
+.sp-role li::before{content:"★ ";color:var(--coral)}
+
+/* alur */
+.sp-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.sp-step{padding:22px;text-align:center}
+.sp-step b{display:grid;place-items:center;width:52px;height:52px;margin:0 auto 12px;border:3px solid var(--ink);border-radius:50%;font-family:'Archivo Black';font-size:1.3rem}
+.sp-step h3{font-size:1.05rem;margin-bottom:6px}
+.sp-step p{font-size:.9rem}
+
+/* penutup */
+.sp-end{margin-top:90px;background:var(--coral);padding:54px 24px;text-align:center;transform:rotate(-1deg)}
+.sp-end h2{font-size:clamp(1.9rem,4.5vw,3rem);margin-bottom:22px}
+
+/* responsif */
+@media(max-width:860px){
+ .sp{padding:6px 16px 40px}
+ .sp-hero{grid-template-columns:1fr}
+ .sp-grid,.sp-flow{grid-template-columns:1fr 1fr}
+ .sp-role{grid-template-columns:1fr}
+ .sp-tape{margin:10px -20px}
+}
+@media(max-width:560px){.sp-grid,.sp-flow{grid-template-columns:1fr}}
