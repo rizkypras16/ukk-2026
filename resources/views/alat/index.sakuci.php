@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="/css/sarpras-landing.css">
     <link rel="stylesheet" href="/css/sarpras-pages.css">
 
-    <div class="container-fluid py-4">
+    <div class="container py-4">
         <div class="sp">
 
             {{-- Header Halaman & Tombol Tambah --}}
@@ -49,11 +49,8 @@
                             <tr>
                                 <th style="width:60px">No</th>
                                 <th>Kategori</th>
-                                <th>Nama Alat</th>
                                 <th>Kode Alat</th>
-                                <th>Kondisi</th>
-                                <th class="sp-c">Jumlah</th>
-                                <th>Lokasi</th>
+                                <th>Nama Alat</th>
                                 @if($canManage)
                                     <th class="sp-r">Aksi</th>
                                 @endif
@@ -61,18 +58,11 @@
                         </thead>
                         <tbody>
                             @forelse ($data as $index => $d)
-                                @php
-                                    $kondisi = strtolower($d->kondisi);
-                                    $kelasKondisi = str_contains($kondisi, 'baik') ? 'baik' : (str_contains($kondisi, 'ringan') ? 'ringan' : 'berat');
-                                @endphp
                                 <tr>
                                     <td><strong>{{ method_exists($data, 'firstItem') ? $data->firstItem() + $index : $index + 1 }}</strong></td>
-                                    <td><span class="sp-tag">{{ $d->kategori->nama_kategori ?? '-' }}</span></td>
-                                    <td><span class="sp-name">{{ $d->nama_alat }}</span></td>
+                                    <td><span class="sp-tag">{{ $d->kategori->nama_kategori ?? $d->kategori->nama_lengkap ?? '-' }}</span></td>
                                     <td><span class="sp-code">{{ $d->kode_alat }}</span></td>
-                                    <td><span class="sp-st sp-st--{{ $kelasKondisi }}">{{ $d->kondisi }}</span></td>
-                                    <td class="sp-c"><span class="sp-count">{{ $d->jumlah }}</span></td>
-                                    <td><span class="sp-muted">{{ $d->lokasi }}</span></td>
+                                    <td><span class="sp-name">{{ $d->nama_alat }}</span></td>
 
                                     @if($canManage)
                                         <td class="sp-r">
@@ -90,7 +80,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="{{ $canManage ? 8 : 7 }}" class="sp-empty">
+                                    <td colspan="{{ $canManage ? 5 : 4 }}" class="sp-empty">
                                         <h3>Belum Ada Data Alat</h3>
                                         <p class="sp-muted">Silakan tambahkan data alat inventaris baru melalui tombol di atas.</p>
                                     </td>

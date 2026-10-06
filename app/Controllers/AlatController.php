@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Sakuci\Controller;
 use Sakuci\Http\Request;
 use App\Models\Alat;
-use App\Models\Kategori; // Jangan lupa import model Kategori di sini
+use App\Models\Kategori;
 
 class AlatController extends Controller
 {
@@ -31,20 +31,20 @@ class AlatController extends Controller
     {
         $request->validate([
             'id_kategori' => 'required|numeric',
-            'nama_alat'   => 'required|string|max:255',
-            'kode_alat'   => 'required|string|unique:alat,kode_alat',
-            'kondisi'     => 'required|string|max:50',
-            'jumlah'      => 'required|numeric',
-            'lokasi'      => 'required|string|max:255',
+            'nama_alat'   => 'required|string|max:100',
         ]);
+
+        // Kode alat dibuat otomatis (ALT001, ALT002, ...) dan dipastikan belum dipakai
+        $nomor = Alat::count() + 1;
+        do {
+            $kodeOtomatis = 'ALT' . sprintf('%03d', $nomor);
+            $nomor++;
+        } while (Alat::where('kode_alat', $kodeOtomatis)->first());
 
         Alat::create([
             'id_kategori' => $request->id_kategori,
+            'kode_alat'   => $kodeOtomatis,
             'nama_alat'   => $request->nama_alat,
-            'kode_alat'   => $request->kode_alat,
-            'kondisi'     => $request->kondisi,
-            'jumlah'      => $request->jumlah,
-            'lokasi'      => $request->lokasi,
         ]);
 
         return redirect()->route('alat.index')->with('success', 'Data alat berhasil ditambahkan');
@@ -62,21 +62,13 @@ class AlatController extends Controller
     {
         $request->validate([
             'id_kategori' => 'required|numeric',
-            'nama_alat'   => 'required|string|max:255',
-            'kode_alat'   => 'required|string|unique:alat,kode_alat,' . $alat . ',id_alat',
-            'kondisi'     => 'required|string|max:50',
-            'jumlah'      => 'required|numeric',
-            'lokasi'      => 'required|string|max:255',
+            'nama_alat'   => 'required|string|max:100',
         ]);
 
         $data_alat = Alat::where('id_alat', $alat)->first();
         $data_alat->update([
             'id_kategori' => $request->id_kategori,
             'nama_alat'   => $request->nama_alat,
-            'kode_alat'   => $request->kode_alat,
-            'kondisi'     => $request->kondisi,
-            'jumlah'      => $request->jumlah,
-            'lokasi'      => $request->lokasi,
         ]);
 
         return redirect()->route('alat.index')->with('success', 'Data alat berhasil diperbarui');

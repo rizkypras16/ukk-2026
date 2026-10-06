@@ -452,3 +452,68 @@ code.inline {
 .sp-field input::placeholder{color:#8a8372}
 .sp-formactions{display:flex;gap:14px;flex-wrap:wrap;padding-top:6px}
 button.sp-btn{appearance:none;-webkit-appearance:none}
+
+
+/* ===== Sarpras Pages — tabel & komponen halaman data (pakai bersama sarpras-landing.css) ===== */
+
+/* header halaman */
+.sp-pagehead{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:30px 0 10px}
+.sp-pagehead .sp-title{font-size:clamp(1.8rem,4.5vw,3.2rem)}
+.sp-pagehead .sp-lead{margin:14px 0 0!important}
+
+/* notifikasi */
+.sp-alert{display:flex;justify-content:space-between;align-items:center;gap:14px;background:var(--lime);border:3px solid var(--ink);border-radius:14px;box-shadow:5px 5px 0 var(--ink);padding:12px 18px;margin:22px 0;font-weight:700}
+.sp-alert button{border:3px solid var(--ink);background:#fff;border-radius:8px;font-weight:700;cursor:pointer;padding:0 9px;color:#111}
+
+/* tabel */
+.sp-tablewrap{margin-top:26px;overflow-x:auto;padding:0}
+.sp-table{width:100%;border-collapse:collapse;min-width:720px;color:var(--ink)}
+.sp-table th{background:var(--ink);color:#fff;text-align:left;font-family:'Archivo Black',sans-serif;font-weight:400;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;padding:14px 16px;white-space:nowrap}
+.sp-table td{padding:14px 16px;border-bottom:2px dashed rgba(0,0,0,.35);vertical-align:middle;background:transparent}
+.sp-table tbody tr:hover td{background:rgba(199,242,58,.28)}
+.sp-table tbody tr:last-child td{border-bottom:0}
+.sp-table .sp-r{text-align:right}
+.sp-table .sp-c{text-align:center}
+.sp-name{font-weight:700}
+.sp-muted{opacity:.7;font-size:.9rem}
+
+/* label */
+.sp-tag,.sp-code,.sp-count,.sp-st{display:inline-block;border:2px solid var(--ink);border-radius:99px;padding:3px 12px;font-weight:700;font-size:.8rem;color:#111;white-space:nowrap}
+.sp-tag{background:var(--sky)}
+.sp-code{background:#fff;border-radius:8px;font-family:ui-monospace,Consolas,monospace}
+.sp-count{background:var(--violet);min-width:38px;text-align:center}
+.sp-st--selesai,.sp-st--baik{background:var(--lime)}
+.sp-st--proses,.sp-st--ringan{background:var(--amber)}
+.sp-st--ditolak,.sp-st--berat{background:var(--coral)}
+.sp-st--pending{background:#e9e2d0}
+
+/* tombol kecil */
+.sp-btn--sm{padding:7px 14px;font-size:.85rem;border-radius:10px;box-shadow:3px 3px 0 var(--ink)}
+.sp-btn--sm:hover{box-shadow:1px 1px 0 var(--ink)}
+.sp-btn--amber{background:var(--amber)}
+.sp-btn--coral{background:var(--coral)}
+.sp-actions{display:inline-flex;gap:10px;align-items:center}
+.sp-actions form{margin:0}
+.sp-actions button.sp-btn{font-family:inherit}
+
+/* data kosong */
+.sp-empty{text-align:center;padding:44px 16px!important}
+.sp-empty h3{font-size:1.2rem;margin-bottom:6px}
+
+/* pagination (Bootstrap) */
+.sp-pager{padding:16px;display:flex;justify-content:flex-end;border-top:3px solid var(--ink)}
+.sp-pager .page-link{border:2px solid var(--ink);color:#111;font-weight:700;background:#fff;margin:0 2px;border-radius:8px}
+.sp-pager .active .page-link{background:var(--lime);border-color:var(--ink);color:#111}
+
+/* ===== Form (tambah / edit) ===== */
+.sp-formbox{margin-top:26px;padding:30px}
+.sp-field{margin-bottom:22px}
+.sp-field label{display:block;font-weight:700;margin-bottom:8px}
+.sp-field input,.sp-field select,.sp-field textarea{width:100%;padding:13px 16px;border:3px solid var(--ink);border-radius:12px;background:var(--bg);font-family:inherit;font-size:1rem;color:#111;outline:none;transition:.15s}
+.sp-field input:focus,.sp-field select:focus,.sp-field textarea:focus{background:#fff;box-shadow:4px 4px 0 var(--violet);transform:translate(-2px,-2px)}
+.sp-field input::placeholder{color:#8a8372}
+.sp-formactions{display:flex;gap:14px;flex-wrap:wrap;padding-top:6px}
+button.sp-btn{appearance:none;-webkit-appearance:none}
+
+/* pesan error validasi form */
+.sp-error{margin-top:8px;font-weight:700;font-size:.88rem;color:#111;background:var(--coral);border:2px solid var(--ink);border-radius:8px;padding:4px 10px;display:inline-block}

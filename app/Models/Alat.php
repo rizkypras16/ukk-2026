@@ -12,14 +12,13 @@ class Alat extends Model
     public bool $timestamps = false;
 
     protected array $fillable = [
+        'id_kategori',
         'kode_alat',
         'nama_alat',
-        'kategori',
         'jumlah',
-        'kondisi'
+        'kondisi',
     ];
 
-    
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
