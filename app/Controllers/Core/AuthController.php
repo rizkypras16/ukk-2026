@@ -64,7 +64,7 @@ class AuthController extends Controller
             // 5. Simpan ke tabel siswa
             if (class_exists(Siswa::class)) {
                 Siswa::create([
-                    'id_user'     => $user->id,
+                    'id_user'     => $user->id_user,
                     'id_kategori' => null,
                     'nis'         => $usernameInput,
                     'nama'        => $request->input('nama'),
@@ -73,7 +73,7 @@ class AuthController extends Controller
             }
 
             // Set session login
-            Session::put('user_id', $user->id);
+            Session::put('user_id', $user->id_user);
 
             return redirect('/dashboard')->with('success', 'Pendaftaran berhasil. Selamat datang, ' . $user->username . '.');
 
@@ -97,7 +97,7 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        Session::put('user_id', $user->id);
+        Session::put('user_id', $user->id_user);
 
         // Pengarahan otomatis berdasarkan role
         if (strtolower($user->role) === 'admin') {
