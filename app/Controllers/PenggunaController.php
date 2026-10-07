@@ -11,7 +11,7 @@ class PenggunaController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Siswa::leftJoin('users', 'siswa.id_user', '=', 'users.id')
+        $data = Siswa::leftJoin('users', 'siswa.id_user', '=', 'users.id_user')
             ->orderBy('siswa.id_siswa', 'desc')
             ->paginate(5);
 

@@ -41,9 +41,9 @@
                     <tbody>
                         @forelse($data as $index => $item)
                             <tr>
-                                <td><strong>{{ $index + 1 }}</strong></td>
-                                <td><span class="sp-code">{{ $item->kode_kategori ?? 'KTG00' . $item->id_kategori }}</span></td>
-                                <td><span class="sp-name">{{ $item->nama_kategori ?? $item->nama_lengkap ?? $item->kategori ?? $item->keluhan ?? '-' }}</span></td>
+                                <td><strong>{{ method_exists($data, 'firstItem') ? $data->firstItem() + $index : $index + 1 }}</strong></td>
+                                <td><span class="sp-code">{{ 'KTG' . sprintf('%03d', $item->id_kategori) }}</span></td>
+                                <td><span class="sp-name">{{ $item->kategori ?? '-' }}</span></td>
                                 <td class="sp-c">
                                     <div class="sp-actions">
                                         <a href="{{ route('admin.kategori.edit', [$item->id_kategori]) }}" class="sp-btn sp-btn--sm sp-btn--amber">Edit</a>
@@ -66,6 +66,11 @@
                         @endforelse
                     </tbody>
                 </table>
+                @if(method_exists($data, 'hasPages') && $data->hasPages())
+                    <div class="sp-pager">
+                        {!! $data->links('pagination::bootstrap-5') !!}
+                    </div>
+                @endif
             </div>
 
         </div>

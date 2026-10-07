@@ -18,15 +18,15 @@ class Siswa extends Model
         'kelas',
     ];
 
-    // Relasi ke User
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'id_user');
-    }
+   // Relasi ke User
+public function user()
+{
+    return $this->belongsTo(User::class, 'id_user', 'id_user');
+}
 
-    // Relasi ke Kategori
-    public function kategori()
-    {
-        return $this->belongsTo(Kategori::class, 'id_kategori');
-    }
+// Relasi ke Kategori
+public function kategori()
+{
+    return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
+}
 }

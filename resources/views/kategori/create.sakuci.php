@@ -28,6 +28,9 @@
                     <div class="sp-field">
                         <label for="kategori">Nama Kategori</label>
                         <input type="text" id="kategori" name="kategori" placeholder="Contoh: Alat Praktek, Periferal, dll." required>
+                        @error('kategori')
+                            <div class="sp-error">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="sp-formactions">

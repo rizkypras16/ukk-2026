@@ -17,6 +17,7 @@ class Alat extends Model
         'nama_alat',
         'jumlah',
         'kondisi',
+        'lokasi',
     ];
 
     public function kategori()

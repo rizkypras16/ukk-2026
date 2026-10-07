@@ -10,8 +10,8 @@ class KategoriController extends Controller
 {
     public function index(Request $request)
     {
-        
         $data = Kategori::orderBy('id_kategori', 'desc')->paginate(5);
+
         return $this->view('kategori.index', compact('data'));
     }
 
@@ -22,21 +22,13 @@ class KategoriController extends Controller
 
     public function store(Request $request)
     {
+        // Nama field sama dengan kolom tabel kategori: "kategori"
         $request->validate([
-            'nama_kategori' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255',
         ]);
 
-        $terakhir = Kategori::orderBy('id_kategori', 'desc')->first();
-        $nomorUrut = ($terakhir && isset($terakhir->kode_kategori)) 
-            ? ((int) substr($terakhir->kode_kategori, 3)) + 1 
-            : 1;
-
-        $kodeOtomatis = 'KTG' . sprintf("%03d", $nomorUrut);
-
         Kategori::create([
-            'kode_kategori' => $kodeOtomatis,
-            'nama_kategori' => $request->input('nama_kategori'),
-            'nama_lengkap'  => $request->input('nama_kategori'),
+            'kategori' => $request->input('kategori'),
         ]);
 
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil ditambahkan.');
@@ -44,29 +36,39 @@ class KategoriController extends Controller
 
     public function edit($id_kategori)
     {
-        $kategori = Kategori::findOrFail($id_kategori);
+        $kategori = Kategori::where('id_kategori', $id_kategori)->first();
+
+        if (!$kategori) {
+            return redirect()->route('admin.kategori.index')->with('success', 'Kategori tidak ditemukan.');
+        }
+
         return $this->view('kategori.edit', compact('kategori'));
     }
 
     public function update(Request $request, $id_kategori)
     {
         $request->validate([
-            'nama_kategori' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255',
         ]);
 
-        $kategori = Kategori::findOrFail($id_kategori);
-        $kategori->update([
-            'nama_kategori' => $request->input('nama_kategori'),
-            'nama_lengkap'  => $request->input('nama_kategori'),
-        ]);
+        $kategori = Kategori::where('id_kategori', $id_kategori)->first();
+
+        if ($kategori) {
+            $kategori->update([
+                'kategori' => $request->input('kategori'),
+            ]);
+        }
 
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil diperbarui.');
     }
 
     public function destroy($id_kategori)
     {
-        $kategori = Kategori::findOrFail($id_kategori);
-        $kategori->delete();
+        $kategori = Kategori::where('id_kategori', $id_kategori)->first();
+
+        if ($kategori) {
+            $kategori->delete();
+        }
 
         return redirect()->route('admin.kategori.index')->with('success', 'Kategori berhasil dihapus.');
     }
