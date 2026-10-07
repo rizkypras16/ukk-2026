@@ -31,16 +31,6 @@
                 </div>
             </header>
 
-            {{-- PITA BERJALAN --}}
-            <div class="sp-tape">
-                <div>
-                    INVENTARIS<i>✦</i>PEMELIHARAAN<i>✦</i>PENGADAAN<i>✦</i>NOTIFIKASI<i>✦</i>
-                    INVENTARIS<i>✦</i>PEMELIHARAAN<i>✦</i>PENGADAAN<i>✦</i>NOTIFIKASI<i>✦</i>
-                    INVENTARIS<i>✦</i>PEMELIHARAAN<i>✦</i>PENGADAAN<i>✦</i>NOTIFIKASI<i>✦</i>
-                    INVENTARIS<i>✦</i>PEMELIHARAAN<i>✦</i>PENGADAAN<i>✦</i>NOTIFIKASI<i>✦</i>
-                </div>
-            </div>
-
             {{-- FITUR --}}
             <section class="sp-sec" id="sp-fitur">
                 <h2 class="sp-head">Semua urusan <mark>sarpras</mark>, satu tempat.</h2>
@@ -59,7 +49,7 @@
                 <h2 class="sp-head">Pilih <mark>peranmu</mark>.</h2>
                 <div class="sp-tabs">
                     <button type="button" class="sp-tab is-on" data-role="admin">Admin</button>
-                    <button type="button" class="sp-tab" data-role="petugas">Petugas</button>
+                    <button type="button" class="sp-tab" data-role="petugas">Siswa</button>
                 </div>
                 <div class="sp-box sp-role">
                     <div>

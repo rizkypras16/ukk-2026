@@ -67,9 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
     admin: ['ADMIN',
       'Pengendali penuh sistem: dari data master sampai keputusan akhir pengadaan.',
       ['Kelola data master', 'Setujui atau tolak pengadaan', 'Lihat seluruh laporan', 'Atur akun pengguna']],
-    petugas: ['PETUGAS',
-      'Garda depan di lapangan: mencatat barang, merawat, dan mengajukan kebutuhan.',
-      ['Input dan update barang', 'Catat pemeliharaan', 'Ajukan pengadaan', 'Terima notifikasi tugas']]
+    petugas: ['SISWA',
+      'Pengguna utama yang menyampaikan aspirasi dan memantau kondisi fasilitas sekolah.',
+      ['Lihat daftar alat dan fasilitas', 'Kirim aspirasi atau laporan', 'Pantau status laporan', 'Lihat tanggapan dari admin']]
   };
   var tabs = document.querySelectorAll('.sp-tab');
 
