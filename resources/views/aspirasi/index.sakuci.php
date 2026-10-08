@@ -2,6 +2,11 @@
 
 @section('title', config('app.name') . ' -- Kelola Aspirasi & Pengaduan')
 
+@php
+    $currentUser = \App\Models\User::current();
+    $isAdmin = $currentUser && strtolower($currentUser->role) === 'admin';
+@endphp
+
 @section('content')
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
@@ -38,7 +43,9 @@
                             <th>Judul Laporan</th>
                             <th>Status</th>
                             <th>Tanggapan</th>
-                            <th class="sp-r">Aksi</th>
+                            @if($isAdmin)
+                                <th class="sp-r">Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -54,13 +61,15 @@
                                 <td><span class="sp-name">{{ $item->judul }}</span></td>
                                 <td><span class="sp-st sp-st--{{ $kelasStatus }}">{{ $labelStatus }}</span></td>
                                 <td><span class="sp-muted">{{ $item->tanggapan ?? 'Belum ditanggapi' }}</span></td>
+                                @if($isAdmin)
                                 <td class="sp-r">
-                                    <a href="{{ route('admin.aspirasi.edit', ['id_aspirasi' => $item->id_aspirasi]) }}" class="sp-btn sp-btn--sm sp-btn--amber" title="Tanggapi / Edit">Tanggapi</a>
+                                    <a href="{{ route('admin.aspirasi.edit', ['id_aspirasi' => $item->id]) }}" class="sp-btn sp-btn--sm sp-btn--amber" title="Tanggapi / Edit">Tanggapi</a>
                                 </td>
+                                @endif
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="sp-empty">
+                                <td colspan="{{ $isAdmin ? 6 : 5 }}" class="sp-empty">
                                     <h3>Belum Ada Aspirasi / Pengaduan</h3>
                                     <p class="sp-muted">Laporan dari siswa akan muncul di sini.</p>
                                 </td>

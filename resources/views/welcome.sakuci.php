@@ -46,7 +46,7 @@
 
             {{-- PERAN --}}
             <section class="sp-sec">
-                <h2 class="sp-head">Pilih <mark>peranmu</mark>.</h2>
+                <h2 class="sp-head">siapa <mark>kamu?</mark>.</h2>
                 <div class="sp-tabs">
                     <button type="button" class="sp-tab is-on" data-role="admin">Admin</button>
                     <button type="button" class="sp-tab" data-role="petugas">Siswa</button>

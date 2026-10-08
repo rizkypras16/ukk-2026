@@ -8,9 +8,10 @@ class Aspirasi extends Model
 {
     public static ?string $table = 'pengaduan';
 
+    protected string $primaryKey = 'id';
+
     public function kategori()
     {
-        // Ubah 'id' di parameter ketiga menjadi nama primary key yang benar di tabel kategori (contoh: id_kategori atau id)
         return $this->belongsTo(Kategori::class, 'id_kategori', 'id_kategori');
     }
 
@@ -21,6 +22,7 @@ class Aspirasi extends Model
         'judul',
         'deskripsi',
         'foto',
-        'status'
+        'status',
+        'tanggapan',
     ];
 }
