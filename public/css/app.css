@@ -517,3 +517,393 @@ button.sp-btn{appearance:none;-webkit-appearance:none}
 
 /* pesan error validasi form */
 .sp-error{margin-top:8px;font-weight:700;font-size:.88rem;color:#111;background:var(--coral);border:2px solid var(--ink);border-radius:8px;padding:4px 10px;display:inline-block}
+
+/* ==========================================================
+   NEO-BRUTAL THEME untuk halaman Bootstrap (Aspirasi, Login,
+   Daftar, dll). Tempel di BAGIAN PALING BAWAH public/css/app.css
+   Tidak mengubah halaman yang sudah memakai .sp (dashboard).
+   ========================================================== */
+
+:root {
+    --nb-ink: #111;
+    --nb-cream: #fff3dc;
+    --nb-lime: #c6f432;
+    --nb-purple: #8b6cff;
+    --nb-sky: #7dd8ff;
+    --nb-coral: #ff6b6b;
+    --nb-amber: #ffc83d;
+}
+
+/* ---------- Panel krem besar membungkus isi halaman ---------- */
+main.container:not(:has(.sp)) {
+    /* paksa warna terang walau tema Bootstrap sedang dark */
+    --bs-body-color: var(--nb-ink);
+    --bs-body-color-rgb: 17, 17, 17;
+    --bs-emphasis-color: var(--nb-ink);
+    --bs-secondary-color: #444;
+    --bs-secondary-bg: #fff;
+    --bs-tertiary-bg: #fff;
+    --bs-body-bg: var(--nb-cream);
+    --bs-border-color: var(--nb-ink);
+    --bs-link-color: #5b3df5;
+    --bs-link-hover-color: #3b22c4;
+
+    background-color: var(--nb-cream);
+    background-image: radial-gradient(rgba(17, 17, 17, .13) 1.2px, transparent 1.2px);
+    background-size: 18px 18px;
+    border: 3px solid var(--nb-ink);
+    border-radius: 24px;
+    box-shadow: 8px 8px 0 var(--nb-ink);
+    color: var(--nb-ink);
+    padding: 2rem 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-weight: 500;
+}
+
+@media (min-width: 992px) {
+    main.container:not(:has(.sp)) { padding: 2.5rem 2.5rem; }
+}
+
+/* ---------- Judul ---------- */
+main.container:not(:has(.sp)) h1,
+main.container:not(:has(.sp)) h2,
+main.container:not(:has(.sp)) h3,
+main.container:not(:has(.sp)) .h1,
+main.container:not(:has(.sp)) .h2,
+main.container:not(:has(.sp)) .h3 {
+    font-family: 'Archivo Black', 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    color: var(--nb-ink);
+    letter-spacing: -.01em;
+}
+
+main.container:not(:has(.sp)) h1 { font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.1; }
+
+/* Kata yang disorot: <h1>Tambah <span>Aspirasi</span> Baru</h1> */
+main.container:not(:has(.sp)) h1 > span,
+main.container:not(:has(.sp)) h2 > span {
+    background: var(--nb-lime);
+    border: 3px solid var(--nb-ink);
+    border-radius: 12px;
+    padding: 0 .35em;
+    display: inline-block;
+    transform: rotate(-1.5deg);
+}
+
+main.container:not(:has(.sp)) .text-muted,
+main.container:not(:has(.sp)) .text-body-secondary,
+main.container:not(:has(.sp)) .form-text {
+    color: #444 !important;
+}
+
+/* ---------- Card ---------- */
+main.container:not(:has(.sp)) .card {
+    background: #fff;
+    color: var(--nb-ink);
+    border: 3px solid var(--nb-ink);
+    border-radius: 20px;
+    box-shadow: 7px 7px 0 var(--nb-ink);
+    overflow: hidden;
+}
+
+main.container:not(:has(.sp)) .card-header {
+    background: var(--nb-sky);
+    border-bottom: 3px solid var(--nb-ink);
+    font-family: 'Archivo Black', sans-serif;
+    color: var(--nb-ink) !important;
+    padding: .9rem 1.25rem;
+}
+
+main.container:not(:has(.sp)) .card-header * { color: var(--nb-ink) !important; }
+
+main.container:not(:has(.sp)) .card-body { padding: 1.5rem; }
+
+main.container:not(:has(.sp)) .card-footer {
+    background: transparent;
+    border-top: 3px solid var(--nb-ink);
+}
+
+/* ---------- Form ---------- */
+main.container:not(:has(.sp)) .form-label,
+main.container:not(:has(.sp)) label {
+    font-weight: 700;
+    color: var(--nb-ink);
+    margin-bottom: .35rem;
+}
+
+main.container:not(:has(.sp)) .form-control,
+main.container:not(:has(.sp)) .form-select,
+main.container:not(:has(.sp)) input[type="text"],
+main.container:not(:has(.sp)) input[type="password"],
+main.container:not(:has(.sp)) input[type="email"],
+main.container:not(:has(.sp)) input[type="number"],
+main.container:not(:has(.sp)) textarea,
+main.container:not(:has(.sp)) select {
+    background-color: #fff;
+    color: var(--nb-ink);
+    border: 3px solid var(--nb-ink);
+    border-radius: 12px;
+    padding: .7rem 1rem;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+main.container:not(:has(.sp)) .form-control::placeholder,
+main.container:not(:has(.sp)) textarea::placeholder {
+    color: #8a8a8a;
+    font-weight: 500;
+}
+
+main.container:not(:has(.sp)) .form-control:focus,
+main.container:not(:has(.sp)) .form-select:focus,
+main.container:not(:has(.sp)) textarea:focus {
+    background-color: #fff;
+    color: var(--nb-ink);
+    border-color: var(--nb-ink);
+    box-shadow: 5px 5px 0 var(--nb-purple);
+    outline: none;
+}
+
+main.container:not(:has(.sp)) .form-control::file-selector-button {
+    background: var(--nb-amber);
+    color: var(--nb-ink);
+    border: 0;
+    border-right: 3px solid var(--nb-ink);
+    font-weight: 700;
+    margin-right: 1rem;
+    padding: .7rem 1rem;
+}
+
+main.container:not(:has(.sp)) .is-invalid { border-color: var(--nb-coral) !important; }
+main.container:not(:has(.sp)) .invalid-feedback { color: #c0262d; font-weight: 700; }
+
+/* ---------- Tombol ---------- */
+main.container:not(:has(.sp)) .btn {
+    font-family: 'Archivo Black', 'Space Grotesk', sans-serif;
+    font-weight: 400;
+    color: var(--nb-ink);
+    border: 3px solid var(--nb-ink);
+    border-radius: 14px;
+    padding: .6rem 1.2rem;
+    box-shadow: 4px 4px 0 var(--nb-ink);
+    transition: transform .08s ease, box-shadow .08s ease;
+}
+
+main.container:not(:has(.sp)) .btn:hover,
+main.container:not(:has(.sp)) .btn:focus-visible {
+    color: var(--nb-ink);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--nb-ink);
+}
+
+main.container:not(:has(.sp)) .btn:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--nb-ink);
+}
+
+main.container:not(:has(.sp)) .btn-primary,
+main.container:not(:has(.sp)) .btn-success { background: var(--nb-lime); border-color: var(--nb-ink); }
+
+main.container:not(:has(.sp)) .btn-secondary,
+main.container:not(:has(.sp)) .btn-light,
+main.container:not(:has(.sp)) .btn-outline-secondary,
+main.container:not(:has(.sp)) .btn-outline-primary { background: #fff; border-color: var(--nb-ink); }
+
+main.container:not(:has(.sp)) .btn-warning { background: var(--nb-amber); }
+main.container:not(:has(.sp)) .btn-danger  { background: var(--nb-coral); }
+main.container:not(:has(.sp)) .btn-info    { background: var(--nb-sky); }
+
+/* ---------- Alert ---------- */
+main.container:not(:has(.sp)) .alert {
+    border: 3px solid var(--nb-ink);
+    border-radius: 14px;
+    box-shadow: 4px 4px 0 var(--nb-ink);
+    color: var(--nb-ink);
+    font-weight: 700;
+}
+main.container:not(:has(.sp)) .alert-success { background: var(--nb-lime); }
+main.container:not(:has(.sp)) .alert-danger  { background: var(--nb-coral); }
+main.container:not(:has(.sp)) .alert-warning { background: var(--nb-amber); }
+main.container:not(:has(.sp)) .alert-info    { background: var(--nb-sky); }
+
+/* ---------- Tabel ---------- */
+main.container:not(:has(.sp)) .table {
+    --bs-table-bg: #fff;
+    --bs-table-color: var(--nb-ink);
+    --bs-table-border-color: var(--nb-ink);
+    --bs-table-striped-bg: #fff8ea;
+    border: 3px solid var(--nb-ink);
+    border-radius: 14px;
+    overflow: hidden;
+}
+main.container:not(:has(.sp)) .table thead th {
+    background: var(--nb-ink);
+    color: #fff;
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    border-color: var(--nb-ink);
+}
+
+/* ---------- Badge ---------- */
+main.container:not(:has(.sp)) .badge {
+    border: 2px solid var(--nb-ink);
+    color: var(--nb-ink);
+    font-weight: 700;
+}
+main.container:not(:has(.sp)) .badge.bg-primary { background: var(--nb-sky) !important; }
+main.container:not(:has(.sp)) .badge.bg-success { background: var(--nb-lime) !important; }
+main.container:not(:has(.sp)) .badge.bg-warning { background: var(--nb-amber) !important; }
+main.container:not(:has(.sp)) .badge.bg-danger  { background: var(--nb-coral) !important; }
+
+/* ---------- Pagination ---------- */
+main.container:not(:has(.sp)) .page-link {
+    color: var(--nb-ink);
+    border: 3px solid var(--nb-ink);
+    font-weight: 700;
+    margin: 0 2px;
+    border-radius: 10px;
+}
+main.container:not(:has(.sp)) .page-item.active .page-link {
+    background: var(--nb-lime);
+    color: var(--nb-ink);
+    border-color: var(--nb-ink);
+}
+
+/* ==========================================================
+   TAMBAHAN untuk halaman Login & Daftar.
+   Tempel di bawah blok nb-theme.css di public/css/app.css
+   ========================================================== */
+
+.nb-sticker {
+    display: inline-block;
+    background: var(--nb-purple, #8b6cff);
+    color: #111;
+    border: 3px solid #111;
+    border-radius: 999px;
+    padding: .25rem .9rem;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: .75rem;
+    letter-spacing: .02em;
+    box-shadow: 3px 3px 0 #111;
+    transform: rotate(-2deg);
+}
+
+main.container .nb-link {
+    color: #111;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-decoration-color: var(--nb-lime, #c6f432);
+    text-underline-offset: 3px;
+}
+main.container .nb-link:hover {
+    background: var(--nb-lime, #c6f432);
+    color: #111;
+}
+
+main.container .nb-divider { border-top: 3px solid #111; }
+
+main.container:not(:has(.sp)) code {
+    background: #fff;
+    color: #111;
+    border: 2px solid #111;
+    border-radius: 6px;
+    padding: .05rem .4rem;
+    font-weight: 700;
+}
+
+main.container:not(:has(.sp)) .alert-info > span.d-block {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: .8rem;
+}
+
+/* ==========================================================
+   NAVBAR GAYA KARTUN: tombol tema, tombol Masuk, chip user.
+   Tempel di BAGIAN PALING BAWAH public/css/app.css
+   ========================================================== */
+
+:root {
+    --nb-bar-shadow: #111;
+}
+[data-bs-theme="dark"] {
+    --nb-bar-shadow: #fff3dc; /* bayangan krem supaya terlihat di topbar gelap */
+}
+
+/* ---------- Tombol ikon bulat (ganti tema) ---------- */
+.nb-iconbtn {
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffc83d;
+    color: #111;
+    border: 3px solid #111;
+    border-radius: 50%;
+    box-shadow: 3px 3px 0 var(--nb-bar-shadow);
+    cursor: pointer;
+    transition: transform .08s ease, box-shadow .08s ease;
+}
+.nb-iconbtn svg { width: 22px; height: 22px; }
+.nb-iconbtn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--nb-bar-shadow);
+}
+.nb-iconbtn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--nb-bar-shadow);
+}
+.nb-iconbtn--sq { border-radius: 12px; background: #fff; }
+
+/* Ikon bulan di mode terang, matahari di mode gelap */
+.nb-ico-sun { display: none; }
+[data-bs-theme="dark"] .nb-ico-sun  { display: block; }
+[data-bs-theme="dark"] .nb-ico-moon { display: none; }
+
+/* ---------- Tombol kartun (Masuk, dll) ---------- */
+.nb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    font-family: 'Archivo Black', 'Space Grotesk', sans-serif;
+    font-size: .9rem;
+    line-height: 1;
+    color: #111;
+    text-decoration: none;
+    background: #fff;
+    border: 3px solid #111;
+    border-radius: 999px;
+    padding: .6rem 1.2rem;
+    box-shadow: 3px 3px 0 var(--nb-bar-shadow);
+    transition: transform .08s ease, box-shadow .08s ease;
+}
+.nb-btn:hover {
+    color: #111;
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0 var(--nb-bar-shadow);
+}
+.nb-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--nb-bar-shadow);
+}
+.nb-btn--lime  { background: #c6f432; }
+.nb-btn--coral { background: #ff6b6b; }
+.nb-btn--sky   { background: #7dd8ff; }
+
+/* ---------- Chip nama user ---------- */
+.nb-chip {
+    align-items: center;
+    gap: .5rem;
+    background: #fff;
+    color: #111;
+    border: 3px solid #111;
+    border-radius: 999px;
+    padding: .35rem .9rem;
+    font-weight: 700;
+    box-shadow: 3px 3px 0 var(--nb-bar-shadow);
+}
+.nb-chip svg { width: 18px; height: 18px; }

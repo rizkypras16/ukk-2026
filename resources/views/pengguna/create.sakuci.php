@@ -5,8 +5,7 @@
 @section('content')
 
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/sarpras-landing.css">
-    <link rel="stylesheet" href="/css/sarpras-pages.css">
+    
 
     <div class="container py-4">
         <div class="sp">

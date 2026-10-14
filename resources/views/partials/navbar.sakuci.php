@@ -31,8 +31,7 @@
 
             {{-- Nama Aplikasi --}}
             <a class="navbar-brand fw-bold m-0 d-flex flex-column text-body ms-1" href="{{ route('home') }}">
-                <span class="fs-6 d-block lh-1 fw-bold text-body">{{ config('app.name') }}</span>
-                <small class="text-body-secondary fw-normal mt-1" style="font-size: 0.7rem;">Sarana & Prasarana</small>
+                <span class="fs-6 d-block lh-1 fw-bold text-body">pengaduan sakuci</span>
             </a>
         </div>
 
@@ -139,7 +138,7 @@
                 <li class="nav-item">
                     {{-- DIUBAH MENGGUNAKAN URL LANGSUNG AGAR MASUK KE HALAMAN ADMIN / DASHBOARD YANG BENAR --}}
                     <a class="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 text-body hover-bg"
-   href="{{ isset($currentUser->role) && $currentUser->role === 'admin' ? url('/aspirasi') : url('/dashboard') }}">
+   href="{{ isset($currentUser->role) && $currentUser->role === 'admin' ? url('/admin') : url('/dashboard') }}">
     <i class="bi bi-speedometer2 fs-5"></i>
     <span>Dashboard</span>
 </a>
