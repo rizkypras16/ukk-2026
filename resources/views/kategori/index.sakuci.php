@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends ('layouts.app')
+
+@section ('content')
 
 @section('title', config('app.name') . ' -- Data Kategori Sarpras')
 
