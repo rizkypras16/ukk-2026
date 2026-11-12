@@ -11,7 +11,7 @@ class AlatController extends Controller
 {
     public function index(Request $request)
     {
-        // Mengambil data alat beserta relasi kategorinya
+        /// Mengambil data alat beserta relasi kategorinya
         $data = Alat::with('kategori')
             ->orderBy('id_alat', 'desc')
             ->paginate(5);
