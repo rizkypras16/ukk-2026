@@ -13,7 +13,7 @@
             <header class="sp-hero" style="grid-template-columns:1fr auto;padding:36px 0 10px">
                 <div>
                     <span class="sp-sticker">★ DASHBOARD SISWA</span>
-                    <h1 class="sp-title" style="font-size:clamp(2rem,5vw,3.6rem)">HALO, <span>{{ $user->username }}</span></h1>
+                    <h1 class="sp-title" style="font-size:clamp(2rem,5vw,3.6rem)">HALO, <span>{{ $siswa->nama ?? $user->username }}</span></h1>
                     <p class="sp-lead">Lihat daftar alat dan sampaikan aspirasi atau laporanmu dengan mudah.</p>
                 </div>
                 <form method="POST" action="/logout">

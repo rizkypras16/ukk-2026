@@ -30,7 +30,7 @@ class AuthController extends Controller
         try {
             // 1. Ambil input NIS / Username & potong jika lebih dari 50 karakter
             $rawInput = trim($request->input('username') ?? $request->input('nis') ?? '');
-            $usernameInput = substr($rawInput, 0, 50);
+            $usernameInput = substr($rawInput, 0, 20);
 
             if (empty($usernameInput)) {
                 return back()->with('error', 'NIS / Username wajib diisi.')->withInput();

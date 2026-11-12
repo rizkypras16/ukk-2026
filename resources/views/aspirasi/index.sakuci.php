@@ -19,10 +19,16 @@
             {{-- Header --}}
             <header class="sp-pagehead">
                 <div>
+                @if($isAdmin)
                     <span class="sp-sticker">★ PANEL ADMINISTRATOR</span>
                     <h1 class="sp-title">Kelola <span>Aspirasi</span> &amp; Pengaduan</h1>
                     <p class="sp-lead">Daftar laporan dan aspirasi fasilitas dari siswa.</p>
-                </div>
+                @else
+                    <span class="sp-sticker">★ RIWAYAT SAYA</span>
+                    <h1 class="sp-title">Riwayat <span>Pengaduan</span></h1>
+                    <p class="sp-lead">Daftar laporan yang pernah kamu kirim.</p>
+                @endif
+    </div>
             </header>
 
             {{-- Notifikasi Sukses --}}
@@ -55,18 +61,27 @@
                                 $kelasStatus = in_array($status, ['selesai', 'proses', 'ditolak']) ? $status : 'pending';
                                 $labelStatus = $kelasStatus === 'pending' ? 'Pending' : ucfirst($kelasStatus);
                             @endphp
-                            <tr>
-                                <td><strong>{{ method_exists($data, 'firstItem') ? $data->firstItem() + $index : $index + 1 }}</strong></td>
-                                <td><span class="sp-tag">{{ $item->kategori->kategori ?? '-' }}</span></td>
-                                <td><span class="sp-name">{{ $item->judul }}</span></td>
-                                <td><span class="sp-st sp-st--{{ $kelasStatus }}">{{ $labelStatus }}</span></td>
-                                <td><span class="sp-muted">{{ $item->tanggapan ?? 'Belum ditanggapi' }}</span></td>
-                                @if($isAdmin)
-                                <td class="sp-r">
-                                    <a href="{{ route('admin.aspirasi.edit', ['id_aspirasi' => $item->id]) }}" class="sp-btn sp-btn--sm sp-btn--amber" title="Tanggapi / Edit">Tanggapi</a>
-                                </td>
-                                @endif
-                            </tr>
+                        <tr>
+                            <td><strong>{{ method_exists($data, 'firstItem') ? $data->firstItem() + $index : $index + 1 }}</strong></td>
+                            <td><span class="sp-tag">{{ $item->kategori->kategori ?? '-' }}</span></td>
+                            <td><span class="sp-name">{{ $item->judul }}</span></td>
+                            <td><span class="sp-st sp-st--{{ $kelasStatus }}">{{ $labelStatus }}</span></td>
+                        <td>
+                            <span class="sp-muted">{{ $item->tanggapan ?? 'Belum ditanggapi' }}</span>
+                        @if($item->foto_hasil && $status === 'selesai')
+                            <div style="margin-top:8px">
+                            <a href="{{ asset('uploads/aspirasi/' . $item->foto_hasil) }}" target="_blank">
+                        <img class="sp-thumb" src="{{ asset('uploads/aspirasi/' . $item->foto_hasil) }}" alt="Hasil Perbaikan">
+                        </a>
+                        </div>
+                        @endif
+                        </td>
+                        @if($isAdmin)
+                            <td class="sp-r">
+                                <a href="{{ route('admin.aspirasi.edit', ['id_aspirasi' => $item->id]) }}" class="sp-btn sp-btn--sm sp-btn--amber" title="Tanggapi / Edit">Tanggapi</a>
+                        </td>
+                        @endif
+                        </tr>
                         @empty
                             <tr>
                                 <td colspan="{{ $isAdmin ? 6 : 5 }}" class="sp-empty">

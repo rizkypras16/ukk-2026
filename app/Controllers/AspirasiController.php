@@ -19,12 +19,38 @@ class AspirasiController extends Controller
         return $currentUser && strtolower($currentUser->role) === 'admin';
     }
 
+    // Admin boleh semua; siswa hanya boleh miliknya sendiri
+    private function boleh($aspirasi): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        $user = User::current();
+
+        return $user && $aspirasi && $aspirasi->user_id == $user->id_user;
+    }
+
+    // Lokasi folder upload
+    private function targetDir(): string
+    {
+        return function_exists('public_path')
+            ? \public_path('uploads/aspirasi/')
+            : __DIR__ . '/../../public/uploads/aspirasi/';
+    }
+
     // TAMPILKAN DAFTAR PENGADUAN / ASPIRASI
     public function index(Request $request)
     {
-        $data = Aspirasi::with('kategori')
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+        $query = Aspirasi::with('kategori');
+
+        // Siswa hanya melihat laporannya sendiri
+        if (!$this->isAdmin()) {
+            $user  = User::current();
+            $query = $query->where('user_id', $user->id_user);
+        }
+
+        $data = $query->orderBy('id', 'desc')->paginate(10);
 
         return view('aspirasi.index', compact('data'));
     }
@@ -45,14 +71,13 @@ class AspirasiController extends Controller
             'foto'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $namaFoto = null;
+        $namaFoto  = null;
+        $targetDir = $this->targetDir();
 
         // Proses Upload File Foto Bukti
         if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-            $file = $_FILES['foto'];
+            $file     = $_FILES['foto'];
             $namaFoto = time() . '_' . basename($file['name']);
-
-            $targetDir = function_exists('public_path') ? \public_path('uploads/aspirasi/') : __DIR__ . '/../../public/uploads/aspirasi/';
 
             if (!file_exists($targetDir)) {
                 mkdir($targetDir, 0777, true);
@@ -62,8 +87,9 @@ class AspirasiController extends Controller
         }
 
         Aspirasi::create([
-            'user_id'     => 1, // Sesuaikan dengan user yang sedang login jika ada
+            'user_id'     => User::current()->id_user,
             'id_kategori' => $request->id_kategori,
+            'id_alat'     => $request->id_alat ?? null,
             'judul'       => $request->judul,
             'deskripsi'   => $request->deskripsi,
             'foto'        => $namaFoto,
@@ -79,7 +105,7 @@ class AspirasiController extends Controller
         $aspirasi = Aspirasi::where('id', $id)->first();
         $isAdmin  = $this->isAdmin();
 
-        if (!$aspirasi) {
+        if (!$aspirasi || !$this->boleh($aspirasi)) {
             $tujuan = $isAdmin ? 'admin.aspirasi.index' : 'aspirasi.index';
 
             return redirect()->route($tujuan)->with('error', 'Data aspirasi tidak ditemukan.');
@@ -91,25 +117,55 @@ class AspirasiController extends Controller
         return view('aspirasi.edit', compact('aspirasi', 'kategori', 'alat', 'isAdmin'));
     }
 
-    // UPDATE DATA + GANTI FOTO (+ status & tanggapan khusus admin)
+    // UPDATE DATA
+    // Admin : status, tanggapan, foto hasil perbaikan
+    // Siswa : ubah laporan miliknya sendiri
     public function update(Request $request, $id)
     {
-        // Admin hanya mengubah status dan tanggapan
+        $targetDir = $this->targetDir();
+
+        // ===== ADMIN =====
         if ($this->isAdmin()) {
             $request->validate([
-                'status' => 'required|string',
+                'status'     => 'required|string',
+                'foto_hasil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             $aspirasi = Aspirasi::where('id', $id)->first();
 
             if ($aspirasi) {
+                $namaFotoHasil = $aspirasi->foto_hasil;
+
+                if (isset($_FILES['foto_hasil']) && $_FILES['foto_hasil']['error'] === UPLOAD_ERR_OK) {
+                    if ($aspirasi->foto_hasil && file_exists($targetDir . $aspirasi->foto_hasil)) {
+                        unlink($targetDir . $aspirasi->foto_hasil);
+                    }
+
+                    $file          = $_FILES['foto_hasil'];
+                    $namaFotoHasil = time() . '_hasil_' . basename($file['name']);
+
+                    if (!file_exists($targetDir)) {
+                        mkdir($targetDir, 0777, true);
+                    }
+
+                    move_uploaded_file($file['tmp_name'], $targetDir . $namaFotoHasil);
+                }
+
                 $aspirasi->update([
-                    'status'    => strtolower($request->input('status')),
-                    'tanggapan' => $request->input('tanggapan'),
+                    'status'     => strtolower($request->input('status')),
+                    'tanggapan'  => $request->input('tanggapan'),
+                    'foto_hasil' => $namaFotoHasil,
                 ]);
             }
 
             return redirect()->route('admin.aspirasi.index')->with('success', 'Tanggapan berhasil disimpan.');
+        }
+
+        // ===== SISWA =====
+        $aspirasi = Aspirasi::where('id', $id)->first();
+
+        if (!$this->boleh($aspirasi)) {
+            return redirect()->route('aspirasi.index')->with('error', 'Data aspirasi tidak ditemukan.');
         }
 
         $request->validate([
@@ -119,17 +175,14 @@ class AspirasiController extends Controller
             'foto'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $aspirasi = Aspirasi::where('id', $id)->first();
         $namaFoto = $aspirasi->foto;
-
-        $targetDir = function_exists('public_path') ? \public_path('uploads/aspirasi/') : __DIR__ . '/../../public/uploads/aspirasi/';
 
         if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
             if ($aspirasi->foto && file_exists($targetDir . $aspirasi->foto)) {
                 unlink($targetDir . $aspirasi->foto);
             }
 
-            $file = $_FILES['foto'];
+            $file     = $_FILES['foto'];
             $namaFoto = time() . '_' . basename($file['name']);
 
             if (!file_exists($targetDir)) {
@@ -149,15 +202,22 @@ class AspirasiController extends Controller
         return redirect()->route('aspirasi.index')->with('success', 'Aspirasi berhasil diperbarui');
     }
 
-    // HAPUS DATA & FILE FOTO
+    // HAPUS DATA & FILE FOTO (hanya admin)
     public function destroy(Request $request, $id)
     {
-        $aspirasi = Aspirasi::where('id', $id)->first();
-        $targetDir = function_exists('public_path') ? \public_path('uploads/aspirasi/') : __DIR__ . '/../../public/uploads/aspirasi/';
+        if (!$this->isAdmin()) {
+            return redirect()->route('aspirasi.index')->with('error', 'Siswa tidak dapat menghapus laporan.');
+        }
+
+        $aspirasi  = Aspirasi::where('id', $id)->first();
+        $targetDir = $this->targetDir();
 
         if ($aspirasi) {
             if ($aspirasi->foto && file_exists($targetDir . $aspirasi->foto)) {
                 unlink($targetDir . $aspirasi->foto);
+            }
+            if ($aspirasi->foto_hasil && file_exists($targetDir . $aspirasi->foto_hasil)) {
+                unlink($targetDir . $aspirasi->foto_hasil);
             }
             $aspirasi->delete();
         }
@@ -172,7 +232,7 @@ class AspirasiController extends Controller
 
         if ($aspirasi) {
             $aspirasi->tanggapan = $request->tanggapan;
-            $aspirasi->status = 'selesai';
+            $aspirasi->status    = 'selesai';
             $aspirasi->save();
 
             return redirect('/aspirasi')->with('success', 'Tanggapan berhasil dikirim.');

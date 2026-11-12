@@ -69,7 +69,7 @@
                 </div>
 
                 <div class="sp-box sp-formbox">
-                    <form action="{{ route('admin.aspirasi.update', ['id_aspirasi' => $aspirasi->id]) }}" method="POST">
+                    <form action="{{ route('admin.aspirasi.update', ['id_aspirasi' => $aspirasi->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -91,6 +91,20 @@
                         <div class="sp-field">
                             <label for="tanggapan">Tanggapan (opsional)</label>
                             <textarea id="tanggapan" name="tanggapan" rows="5" placeholder="Tulis tanggapan untuk siswa...">{{ old('tanggapan', $aspirasi->tanggapan) }}</textarea>
+                        </div>
+
+                        <div class="sp-field">
+                            <label for="foto_hasil">Foto Hasil Perbaikan (opsional)</label>
+                            @if($aspirasi->foto_hasil)
+                                <a href="{{ asset('uploads/aspirasi/' . $aspirasi->foto_hasil) }}" target="_blank" style="display:inline-block;margin-bottom:10px">
+                                 <img class="sp-thumb" src="{{ asset('uploads/aspirasi/' . $aspirasi->foto_hasil) }}" alt="Foto Hasil Saat Ini">
+                                </a>
+                                @endif
+                                <input type="file" id="foto_hasil" name="foto_hasil" accept="image/*">
+                                    <div class="sp-muted" style="margin-top:6px">Unggah foto setelah barang selesai diperbaiki. Kosongkan jika tidak ingin mengganti.</div>
+                                    @error('foto_hasil')
+                                <div class="sp-error">{{ $message }}</div>
+                                @enderror
                         </div>
 
                         <div class="sp-formactions">

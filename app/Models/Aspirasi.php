@@ -24,5 +24,6 @@ class Aspirasi extends Model
         'foto',
         'status',
         'tanggapan',
+        'foto_hasil',
     ];
 }
